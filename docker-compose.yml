@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: python playground/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=True
+      - MONGO_URI=mongodb+srv://daniel13520cs:nlmIVD8svGikrjtG@playground.lskld.mongodb.net/Playground?retryWrites=true&w=majority
