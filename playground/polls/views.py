@@ -1,6 +1,6 @@
 # views.py
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.http import JsonResponse, Http404
 from .models import Todo
 
 def add_todo(request):
@@ -12,7 +12,7 @@ def add_todo(request):
         todo = Todo(title=title, description=description)
         todo.save()
         
-        return JsonResponse({'message': 'Todo added successfully'})
+        return redirect('list_todos')
     
     return render(request, 'polls/add_todo.html')  # Render a form template for adding todos
 
@@ -23,13 +23,16 @@ def list_todos(request):
     return render(request, 'polls/list_todos.html', {'todos': todos})  # Render a template with the list of todos
 
 def delete_todo(request, todo_id):
-    # Retrieve the Todo object by id or return a 404 if not found
-    todo = get_object_or_404(Todo, id=todo_id)
+    # Try to get the Todo object, raise a 404 error if not found
+    try:
+        todo = Todo.objects.get(id=todo_id)
+    except Todo.DoesNotExist:
+        raise Http404("Todo not found")
 
     if request.method == 'POST':
         # If the request is POST, delete the todo
         todo.delete()
-        return JsonResponse({'message': 'Todo deleted successfully'})
-    
+        return redirect('list_todos')
+      
     # If GET request, render the confirmation page
     return render(request, 'polls/delete_todo.html', {'todo': todo})
