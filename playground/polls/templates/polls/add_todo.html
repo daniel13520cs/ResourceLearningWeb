@@ -1,0 +1,23 @@
+<!-- templates/add_todo.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Todo</title>
+</head>
+<body>
+    <h1>Add a New Todo</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title" required><br>
+        
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description"></textarea><br>
+        
+        <input type="submit" value="Add Todo">
+    </form>
+    <a href="{% url 'list_todos' %}">View Todo List</a>
+</body>
+</html>

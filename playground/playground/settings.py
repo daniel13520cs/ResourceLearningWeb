@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 from pymongo import MongoClient
 import urllib
+from mongoengine import connect
+
 
 username = 'daniel13520cs'
 password = 'nlmIVD8svGikrjtG'
@@ -20,12 +22,9 @@ password = 'nlmIVD8svGikrjtG'
 # Escape the username and password
 escaped_username = urllib.parse.quote_plus(username)
 escaped_password = urllib.parse.quote_plus(password)
-connection_uri = f"mongodb+srv://{escaped_username}:{escaped_password}@playground.lskld.mongodb.net/sample_mflix"
-# Initialize the client without connecting
-client = MongoClient(connection_uri)
-
-# Access a specific database (example: 'sample_mflix')
-db = client['sample_mflix']
+connection_uri = f"mongodb+srv://{escaped_username}:{escaped_password}@playground.lskld.mongodb.net/Playground?retryWrites=true&w=majority"
+# Establish a connection to the MongoDB database
+connect(host=connection_uri)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -54,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_mongoengine',
+    'polls.apps.PollsConfig'
 ]
 
 MIDDLEWARE = [
@@ -91,6 +91,9 @@ WSGI_APPLICATION = 'playground.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
+    'default': {
+        'ENGINE': '',
+    }
     # 'default': {
     #     'ENGINE': 'djongo',
     #     'NAME': 'Playground',  # The name of your MongoDB database

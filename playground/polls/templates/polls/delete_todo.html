@@ -1,0 +1,25 @@
+<!-- templates/polls/delete_todo.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Todo</title>
+</head>
+<body>
+    <h1>Delete Todo</h1>
+    
+    <p>Are you sure you want to delete the following todo?</p>
+    
+    <ul>
+        <li><strong>Title:</strong> {{ todo.title }}</li>
+        <li><strong>Description:</strong> {{ todo.description }}</li>
+    </ul>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+        <a href="{% url 'list_todos' %}">Cancel</a>
+    </form>
+</body>
+</html>
