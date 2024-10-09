@@ -39,8 +39,12 @@ SECRET_KEY = 'django-insecure-*ndgs@-a8n)m^h31s^nk1_zo8=4wi(ud3%5d)%2bsek@ibcnfg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://chihchiendjangotodov3.azurewebsites.net',  # Add your Azure URL with https
+    'https://chihchiendjangotodo.azurewebsites.net',
+]
 
 # Application definition
 

@@ -1,3 +1,5 @@
+#Notes!!!: tag local docker image to djangotodo.azurecr.io/django-web
+
 # Use an official Python runtime as a base image
 FROM python:3.10-slim
 
@@ -20,3 +22,4 @@ EXPOSE 8000
 
 # Command to run Django development server
 CMD ["python", "playground/manage.py", "runserver", "0.0.0.0:8000"]
+
