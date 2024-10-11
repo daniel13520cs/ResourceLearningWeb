@@ -57,7 +57,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_mongoengine',
-    'todos.apps.todosConfig'
+    'django_mongoengine.mongo_admin',
+    'todos.apps.todosConfig',
+    'polls.apps.PollsConfig'
 ]
 
 MIDDLEWARE = [
@@ -96,7 +98,8 @@ WSGI_APPLICATION = 'playground.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
     # 'default': {
     #     'ENGINE': 'djongo',
