@@ -14,13 +14,13 @@ def add_todo(request):
         
         return redirect('list_todos')
     
-    return render(request, 'polls/add_todo.html')  # Render a form template for adding todos
+    return render(request, 'todos/add_todo.html')  # Render a form template for adding todos
 
 def list_todos(request):
     # Retrieve all todos from the database
     todos = Todo.objects.all()
     
-    return render(request, 'polls/list_todos.html', {'todos': todos})  # Render a template with the list of todos
+    return render(request, 'todos/list_todos.html', {'todos': todos})  # Render a template with the list of todos
 
 def delete_todo(request, todo_id):
     # Try to get the Todo object, raise a 404 error if not found
@@ -35,4 +35,4 @@ def delete_todo(request, todo_id):
         return redirect('list_todos')
       
     # If GET request, render the confirmation page
-    return render(request, 'polls/delete_todo.html', {'todo': todo})
+    return render(request, 'todos/delete_todo.html', {'todo': todo})
