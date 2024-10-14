@@ -18,6 +18,7 @@ from django.contrib import admin
 from django_mongoengine import mongo_admin
 from django.urls import include, path
 
+
 urlpatterns = [
     path("", include("todos.urls")),
     path("polls/", include("polls.urls")),
