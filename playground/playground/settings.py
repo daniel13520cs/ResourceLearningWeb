@@ -90,6 +90,10 @@ TEMPLATES = [
     },
 ]
 
+STATICFILES_DIRS = [
+    "polls/static",
+    "todos/static",
+]
 WSGI_APPLICATION = 'playground.wsgi.application'
 
 

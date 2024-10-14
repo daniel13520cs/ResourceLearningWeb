@@ -1,3 +1,6 @@
+
+{% load static %}
+
 <!-- templates/list_todos.html -->
 <!DOCTYPE html>
 <html lang="en">
@@ -5,6 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo List</title>
+    <link rel="stylesheet" href="{% static 'todos/style.css' %}"> <!-- Link to your CSS file -->
 </head>
 <body>
     <h1>Todo List</h1>
@@ -12,7 +16,7 @@
         {% for todo in todos %}
             <li>
                 <strong>{{ todo.title }}</strong><br>
-                {{ todo.description }}<br>
+                <p>Description: {{ todo.description }}</p>
                 <em>Created at: {{ todo.created_at }}</em>
                 <a href="{% url 'delete_todo' todo.id %}">Delete</a>
             </li>

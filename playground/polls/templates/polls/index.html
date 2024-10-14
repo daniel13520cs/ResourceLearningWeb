@@ -1,3 +1,15 @@
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Example</title>
+    <link rel="stylesheet" href="{% static 'polls/style.css' %}"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <h1>Welcome to the Polls App</h1>
+    <p>Here is a list of poll questions!</p>
+</body>
+
 {% if latest_question_list %}
     <ul>
     {% for question in latest_question_list %}
