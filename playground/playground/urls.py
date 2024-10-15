@@ -17,10 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django_mongoengine import mongo_admin
 from django.urls import include, path
-
+from .views import App_list_view
 
 urlpatterns = [
-    path("", include("todos.urls")),
+    path("", App_list_view.as_view(), name = "app_list_site"),
     path("polls/", include("polls.urls")),
     path("todos/", include("todos.urls")),
     path("admin/", admin.site.urls),

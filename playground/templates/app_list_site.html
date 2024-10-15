@@ -1,0 +1,12 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+{% if USER_APPS %}
+    <ul>
+    {% for app in USER_APPS %}
+        <li><a href="/{{ app }}">{{ app }} </a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No apps are available.</p>
+{% endif %}
+{% endblock %}

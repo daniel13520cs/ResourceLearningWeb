@@ -61,6 +61,10 @@ INSTALLED_APPS = [
     'polls.apps.PollsConfig',
     'debug_toolbar',
 ]
+USER_APPS = [
+    'todos',
+    'polls',
+]
 
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',

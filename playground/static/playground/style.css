@@ -1,0 +1,11 @@
+li a {
+    color: red;
+}
+
+body {
+    background: white url("images/todoBackground.jpg") no-repeat;
+}
+
+a {
+    color: red
+}
