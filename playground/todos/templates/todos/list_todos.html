@@ -19,7 +19,7 @@
                 <li>
                     <strong>{{ todo.title }}</strong><br>
                     <p>Description: {{ todo.description }}</p>
-                    <em>Created at: {{ todo.created_at }}</em>
+                    <p>Created at: {{ todo.created_at }}</p>
                     <a href="{% url 'delete_todo' todo.id %}">Delete</a>
                 </li>
             {% endfor %}
