@@ -6,24 +6,25 @@
 <!-- templates/list_todos.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List</title>
-</head>
-<body>
-    <h1>Todo List</h1>
-    <ul>
-        {% for todo in todos %}
-            <li>
-                <strong>{{ todo.title }}</strong><br>
-                <p>Description: {{ todo.description }}</p>
-                <em>Created at: {{ todo.created_at }}</em>
-                <a href="{% url 'delete_todo' todo.id %}">Delete</a>
-            </li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'add_todo' %}">Add a new Todo</a>
-</body>
-</html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Todo List</title>
+        <link rel="stylesheet" href="{% static "todos/style.css" %}">
+    </head>
+    <body>
+        <h1>Todo List</h1>
+        <ul>
+            {% for todo in todos %}
+                <li>
+                    <strong>{{ todo.title }}</strong><br>
+                    <p>Description: {{ todo.description }}</p>
+                    <em>Created at: {{ todo.created_at }}</em>
+                    <a href="{% url 'delete_todo' todo.id %}">Delete</a>
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'add_todo' %}">Add a new Todo</a>
+    </body>
+    </html>
 {% endblock %}
