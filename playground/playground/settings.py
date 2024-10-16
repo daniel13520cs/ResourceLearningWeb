@@ -59,11 +59,13 @@ INSTALLED_APPS = [
     'django_mongoengine.mongo_admin',
     'todos.apps.todosConfig',
     'polls.apps.PollsConfig',
+    'event.apps.EventConfig',
     'debug_toolbar',
 ]
 USER_APPS = [
     'todos',
     'polls',
+    'event',
 ]
 
 MIDDLEWARE = [

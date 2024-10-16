@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Event</title>
+</head>
+<body>
+    <h1>Delete Event</h1>
+    <p>Are you sure you want to delete the event "{{ event.title }}"?</p>
+    <form action="" method="POST">  <!-- Action is empty as it defaults to the same URL -->
+        {% csrf_token %}
+        <input type="submit" value="Yes, Delete">
+    </form>
+    <a href="{% url 'list_events' %}">Cancel</a>
+</body>
+</html>

@@ -5,7 +5,7 @@
 {% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('ChihChien Hsiao') }}{% endblock %}
 
 {% block branding %}
-<div id="site-name"><a href="{% url 'list_todos' %}">ChihChien Hsiao</a></div>
+<div id="site-name"><a href="{% url 'app_list_site' %}">ChihChien Hsiao</a></div>
 {% if user.is_anonymous %}
   {% include "admin/color_theme_toggle.html" %}
 {% endif %}

@@ -21,6 +21,7 @@ from .views import App_list_view
 
 urlpatterns = [
     path("", App_list_view.as_view(), name = "app_list_site"),
+    path("event/", include("event.urls")),
     path("polls/", include("polls.urls")),
     path("todos/", include("todos.urls")),
     path("admin/", admin.site.urls),
