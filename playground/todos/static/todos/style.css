@@ -9,6 +9,7 @@ ul {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     padding: 20px; /* Inner padding */
     list-style-type: none; /* Removes bullet points */
+    width:fit-content
 }
 
 li {
