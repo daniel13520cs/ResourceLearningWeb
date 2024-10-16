@@ -1,3 +1,5 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,26 +9,27 @@
 </head>
 <body>
     <h1>Update Event</h1>
-    <form action="" method="POST">  <!-- Action is empty as it defaults to the same URL -->
+    <form method="POST">
         {% csrf_token %}
-        
         <label for="title">Title:</label><br>
-        <input type="text" id="title" name="title" value="{{ form.title.value }}" required><br>
+        <input type="text" id="title" name="title" value="{{ event.title }}" required><br><br>
 
         <label for="description">Description:</label><br>
-        <textarea id="description" name="description">{{ form.description.value }}</textarea><br>
+        <textarea id="description" name="description">{{ event.description }}</textarea><br><br>
 
         <label for="startTime">Start Time:</label><br>
-        <input type="datetime-local" id="startTime" name="startTime" value="{{ form.startTime.value|date:'Y-m-d H:i' }}"><br>
+        <input type="datetime-local" id="startTime" name="startTime" value="{{ event.startTime|date:'Y-m-d\TH:i' }}" required><br><br>
 
         <label for="location">Location:</label><br>
-        <input type="text" id="location" name="location" value="{{ form.location.value }}"><br>
+        <input type="text" id="location" name="location" value="{{ event.location }}"><br><br>
 
-        <label for="URL">Event URL:</label><br>
-        <input type="url" id="URL" name="URL" value="{{ form.URL.value }}"><br><br>
+        <label for="URL">URL:</label><br>
+        <input type="url" id="URL" name="URL" value="{{ event.URL }}"><br><br>
 
-        <input type="submit" value="Update Event">
+        <button type="submit">Update Event</button>
     </form>
     <a href="{% url 'list_events' %}">Back to Event List</a>
 </body>
 </html>
+{% endblock %}
+

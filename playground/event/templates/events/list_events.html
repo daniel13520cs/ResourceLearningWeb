@@ -1,23 +1,29 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event List</title>
+    <title>List of Events</title>
 </head>
 <body>
-    <h1>Event List</h1>
+    <h1>Events</h1>
     <a href="{% url 'add_event' %}">Add New Event</a>
     <ul>
         {% for event in events %}
             <li>
                 <strong>{{ event.title }}</strong><br>
-                Description: {{ event.description }}<br>
-                Start Time: {{ event.startTime }}<br>
-                Location: {{ event.location }}<br>
-                <a href="{{ event.URL }}" target="_blank">Event Link</a><br>
-                <a href="{% url 'delete_event' event.id %}">Delete Event</a>
-                <a href="{% url 'update_event' event.id %}">Update Event</a>
+                <p>Description: {{ event.description }}</p>
+                <p>Start Time: {{ event.startTime }}</p>
+                {% if event.location %}
+                    <p>Location: {{ event.location }}</p>
+                {% endif %}
+                {% if event.URL %}
+                    URL: <a href="{{ event.URL }}">{{ event.URL }}</a><br>
+                {% endif %}
+                <button onclick="location.href='{% url 'update_event' event.id %}'">Edit</button>
+                <button onclick="location.href='{% url 'delete_event' event.id %}'">Delete</button>
             </li>
         {% empty %}
             <li>No events available.</li>
@@ -25,3 +31,5 @@
     </ul>
 </body>
 </html>
+{% endblock %}
+

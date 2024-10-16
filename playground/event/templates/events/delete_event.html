@@ -1,3 +1,5 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,11 +9,13 @@
 </head>
 <body>
     <h1>Delete Event</h1>
-    <p>Are you sure you want to delete the event "{{ event.title }}"?</p>
-    <form action="" method="POST">  <!-- Action is empty as it defaults to the same URL -->
+    <p>Are you sure you want to delete the event: <strong>{{ event.title }}</strong>?</p>
+    <form method="POST">
         {% csrf_token %}
-        <input type="submit" value="Yes, Delete">
+        <button type="submit">Yes, Delete</button>
     </form>
     <a href="{% url 'list_events' %}">Cancel</a>
 </body>
 </html>
+{% endblock %}
+
