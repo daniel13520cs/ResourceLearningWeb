@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 from .models import Event
 from datetime import datetime
+from django.contrib.auth.decorators import login_required
+
 # Function to add a new event
 def add_event(request):
     if request.method == 'POST':
@@ -32,6 +34,7 @@ def add_event(request):
     return render(request, 'events/add_event.html')  # Render the form template
 
 # Function to list all events
+@login_required
 def list_events(request):
     events = Event.objects.all()  # Retrieve all events from the database
     return render(request, 'events/list_events.html', {'events': events})  # Render the template with events

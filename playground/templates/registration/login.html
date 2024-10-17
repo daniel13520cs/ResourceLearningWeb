@@ -26,8 +26,7 @@
 {% if user.is_authenticated %}
 <p class="errornote">
 {% blocktranslate trimmed %}
-    You are authenticated as {{ username }}, but are not authorized to
-    access this page. Would you like to login to a different account?
+    You are authenticated as {{ user.username }}. Would you like to login to a different account?
 {% endblocktranslate %}
 </p>
 {% endif %}
@@ -51,6 +50,7 @@
   {% endif %}
   <div class="submit-row">
     <input type="submit" value="{% translate 'Log in' %}">
+    <a href="{% url 'register' %}" class="button">{% translate 'Register' %}</a>
   </div>
 </form>
 
