@@ -42,7 +42,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://chihchiendjangotodov3.azurewebsites.net',  # Add your Azure URL with https
+    'https://chihchienhsiao.azurewebsites.net',  # Add your Azure URL with https
     'https://chihchiendjangotodo.azurewebsites.net',
 ]
 
