@@ -62,6 +62,12 @@ INSTALLED_APPS = [
     'event.apps.EventConfig',
     'debug_toolbar',
 ]
+
+
+LOGIN_URL = 'login'  # URL to redirect to for login
+LOGIN_REDIRECT_URL = 'list_events'  # URL to redirect to after login
+LOGOUT_REDIRECT_URL = 'list_events'  # URL to redirect to after logout
+
 USER_APPS = [
     'todos',
     'polls',

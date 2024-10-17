@@ -22,7 +22,12 @@
   <a href="{% url 'list_events' %}">{% translate 'Events' %}</a>
   <span style="margin: 0 10px;">|</span>
   <a href="{% url 'polls:index' %}">{% translate 'Feedback' %}</a>
-
+  <span style="margin: 0 10px;">|</span>
+  <a href="{% url 'login' %}">{% translate 'Login' %}</a>
+  <span style="margin: 0 10px;">|</span>
+  <a href="{% url 'logout' %}">{% translate 'Logout' %}</a>
+  <span style="margin: 0 10px;">|</span>
+  <a href="{% url 'register' %}">{% translate 'Register' %}</a>
 
   {% if title %} &rsaquo; {{ title }}{% endif %}
 </div>
