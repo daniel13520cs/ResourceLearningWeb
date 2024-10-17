@@ -20,7 +20,7 @@ from django.urls import include, path
 from .views import App_list_view
 
 urlpatterns = [
-    path("", App_list_view.as_view(), name = "app_list_site"),
+    path("", include("event.urls")),
     path("event/", include("event.urls")),
     path("polls/", include("polls.urls")),
     path("todos/", include("todos.urls")),
