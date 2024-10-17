@@ -26,7 +26,7 @@
 {% if user.is_authenticated %}
 <p class="errornote">
 {% blocktranslate trimmed %}
-    You are authenticated as {{ user.username }}. Would you like to login to a different account?
+    You are authenticated as {{ user }}. Would you like to login to a different account?
 {% endblocktranslate %}
 </p>
 {% endif %}

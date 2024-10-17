@@ -6,6 +6,7 @@ from datetime import datetime
 from django.contrib.auth.decorators import login_required
 
 # Function to add a new event
+@login_required
 def add_event(request):
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -27,7 +28,8 @@ def add_event(request):
             description=description,
             startTime=startTime,
             location=location,
-            URL=URL or None
+            URL=URL or None,
+            userID = str(request.user.id)
         )
         event.save()
         return redirect('list_events')  # Redirect to the event list
@@ -36,10 +38,12 @@ def add_event(request):
 # Function to list all events
 @login_required
 def list_events(request):
-    events = Event.objects.all()  # Retrieve all events from the database
+    print(request.user.id)
+    events = Event.objects.filter(userID=str(request.user.id))  # Retrieve all events from the database
     return render(request, 'events/list_events.html', {'events': events})  # Render the template with events
 
 # Function to delete an event
+@login_required
 def delete_event(request, event_id):
     try:
         event = Event.objects.get(id=event_id)
@@ -53,6 +57,7 @@ def delete_event(request, event_id):
     return render(request, 'events/delete_event.html', {'event': event})  # Render confirmation page
 
 # Function to update an event
+@login_required
 def update_event(request, event_id):
     try:
         event = Event.objects.get(id=event_id)
