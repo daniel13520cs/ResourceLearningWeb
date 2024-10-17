@@ -20,14 +20,14 @@ from django.urls import include, path
 from .views import App_list_view
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from .views import register
+from .views import register, LoginView,LogoutView
 
 urlpatterns = [
     path("", include("event.urls")),
     path("home", include("event.urls")),
     path('register/', register, name='register'),  # Registration URL
-    path('login/', auth_views.LoginView.as_view(), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     path("event/", include("event.urls")),
     path("polls/", include("polls.urls")),
     path("todos/", include("todos.urls")),

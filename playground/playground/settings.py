@@ -65,9 +65,10 @@ INSTALLED_APPS = [
 
 
 LOGIN_URL = 'login'  # URL to redirect to for login
-LOGIN_REDIRECT_URL = 'list_events'  # URL to redirect to after login
-LOGOUT_REDIRECT_URL = 'list_events'  # URL to redirect to after logout
+SESSION_COOKIE_AGE = 3600  # 1 hr
 
+# If you want sessions to expire when the browser is closed, set this to True:
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Keep users logged in after closing the browser
 USER_APPS = [
     'todos',
     'polls',
