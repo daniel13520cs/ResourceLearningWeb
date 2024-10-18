@@ -24,7 +24,7 @@ from .views import register, LoginView,LogoutView
 
 urlpatterns = [
     path("", include("event.urls")),
-    path("home", include("event.urls")),
+    path("home/", include("event.urls")),
     path('register/', register, name='register'),  # Registration URL
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),

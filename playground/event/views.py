@@ -5,6 +5,7 @@ from .models import Event, UserEvents
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages  # Import messages
+from mongoengine.queryset.visitor import Q
 
 
 # Function to add a new event
@@ -49,6 +50,18 @@ def list_events(request):
     event_ids = [user_events.eventID for user_events in userEvents]
     events = Event.objects.filter(id__in = event_ids)
     return render(request, 'events/list_events.html', {'events': events})  # Render the template with events
+
+def list_publicEvents(request):
+    publicEvents = Event.objects.filter(isPublic = True)
+    return render(request, 'events/list_public_events.html', {'events': publicEvents})  # Render the template with events
+
+def optIn_publicEvents(request, event_id): 
+    userEvent = UserEvents(
+        userID = request.user,
+        eventID = str(event_id)
+    )
+    return redirect('list_publicEvents')  # Redirect to the event list
+
 
 # Function to delete an event
 @login_required

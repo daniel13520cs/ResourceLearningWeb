@@ -1,0 +1,36 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of Events</title>
+    <link rel="stylesheet" href="{% static "events/style.css" %}">
+</head>
+<body>
+    <h1>Events</h1>
+    <ul>
+        {% for event in events %}
+            <li>
+                <strong>{{ event.title }}</strong><br>
+                <p>Description: {{ event.description }}</p>
+                <p>Start Time: {{ event.startTime }}</p>
+                {% if event.location %}
+                    <p>Location: {{ event.location }}</p>
+                {% endif %}
+                {% if event.URL %}
+                    URL: <a href="{{ event.URL }}">{{ event.URL }}</a><br>
+                {% endif %}
+                <button onclick="location.href='{% url 'optIn_publicEvents' event.pk %}'">Opt In</button>
+            </li>
+        {% empty %}
+            <li>No public events available.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+{% endblock %}
+
