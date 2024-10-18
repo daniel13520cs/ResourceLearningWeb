@@ -29,7 +29,7 @@ def add_event(request):
             startTime=startTime,
             location=location,
             URL=URL or None,
-            userID = str(request.user.id)
+            ownerUserID = str(request.user.id)
         )
         event.save()
         return redirect('list_events')  # Redirect to the event list
@@ -39,7 +39,7 @@ def add_event(request):
 @login_required
 def list_events(request):
     print(request.user.id)
-    events = Event.objects.filter(userID=str(request.user.id))  # Retrieve all events from the database
+    events = Event.objects.filter(ownerUserID=str(request.user.id))  # Retrieve all events from the database
     return render(request, 'events/list_events.html', {'events': events})  # Render the template with events
 
 # Function to delete an event

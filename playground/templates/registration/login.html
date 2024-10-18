@@ -24,11 +24,17 @@
 <div id="content-main">
 
 {% if user.is_authenticated %}
-<p class="errornote">
-{% blocktranslate trimmed %}
-    You are authenticated as {{ user }}. Would you like to login to a different account?
-{% endblocktranslate %}
-</p>
+  <p class="errornote">
+  {% blocktranslate trimmed %}
+      You are authenticated as {{ user }}. Would you like to login to a different account?
+  {% endblocktranslate %}
+  </p>  
+{% else %}
+  <p class="errornote">
+  {% blocktranslate trimmed %}
+    Please create an account or log in to access this page.
+  {% endblocktranslate %}
+  </p>  
 {% endif %}
 
 <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}

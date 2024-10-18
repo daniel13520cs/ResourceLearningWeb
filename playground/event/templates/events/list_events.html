@@ -12,7 +12,7 @@
 </head>
 <body>
     <h1>Events</h1>
-    <a href="{% url 'add_event' %}">Add New Event</a>
+    <button onclick="location.href='{% url 'add_event' %}'">Add New Event</button>
     <ul>
         {% for event in events %}
             <li>
