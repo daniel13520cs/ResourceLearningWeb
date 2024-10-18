@@ -88,7 +88,7 @@ def update_event(request, event_id):
     except Event.DoesNotExist:
         raise Http404("Event not found")
 
-    if str(request.user.id) != event.ownerUserID:
+    if request.user.id != event.ownerUserID:
         messages.error(request, "You are not authorized to update this event.")  # Add an error message
         return redirect('list_events')  # Redirect to the event list        
 
@@ -101,3 +101,20 @@ def update_event(request, event_id):
         event.save()  # Save the updated event
         return redirect('list_events')  # Redirect to the event list
     return render(request, 'events/update_event.html', {'event': event})  # Render the form for updating
+
+@login_required
+def publish_event(request, event_id):
+    try:
+        event = Event.objects.get(id=event_id)
+    except Event.DoesNotExist:
+        raise Http404("Event not found")
+    
+    if request.method == 'POST':
+        if event.isPublic == True:
+            messages.warning(request, 'This event was published')
+        else:
+            event.isPublic = True
+            event.save()
+            messages.success(request, 'The event is successfully published!')
+    return redirect('list_events')
+    

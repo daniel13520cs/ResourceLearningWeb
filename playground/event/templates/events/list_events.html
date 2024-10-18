@@ -27,6 +27,13 @@
                 {% endif %}
                 <button onclick="location.href='{% url 'update_event' event.id %}'">Edit</button>
                 <button onclick="location.href='{% url 'delete_event' event.id %}'">Delete</button>
+
+
+            <!-- Form for Publish button -->
+            <form action="{% url 'publish_event' event.id %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Publish</button>
+            </form>
             </li>
         {% empty %}
             <li>No events available.</li>
