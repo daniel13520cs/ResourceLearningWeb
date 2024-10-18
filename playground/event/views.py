@@ -35,7 +35,7 @@ def add_event(request):
         )
         event.save()
         userEvents = UserEvents(
-            userID = event.ownerUserID,
+            userID = request.user, #foreign key
             eventID = str(event.pk)
         )
         userEvents.save()
@@ -45,7 +45,6 @@ def add_event(request):
 # Function to list all events
 @login_required
 def list_events(request):
-    print(request.user.id)
     userEvents = UserEvents.objects.filter(userID = request.user.id)
     event_ids = [user_events.eventID for user_events in userEvents]
     events = Event.objects.filter(id__in = event_ids)
@@ -56,7 +55,7 @@ def list_events(request):
 def delete_event(request, event_id):
     try:
         event = Event.objects.get(id=event_id)
-        userEvent = userEvent.objects.get(eventID=event_id, userID=request.user.id)  # Check for user ownership
+        userEvent = UserEvents.objects.get(eventID=event_id, userID=request.user.id)  # Check for user ownership
     except Event.DoesNotExist:
         raise Http404("Event not found")
     

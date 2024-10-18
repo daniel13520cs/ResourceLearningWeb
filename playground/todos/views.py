@@ -15,7 +15,7 @@ def add_todo(request):
         todo = Todo(title=title, description=description)
         todo.save()
         userTodo = UserTodo(
-            userID = request.user.id,
+            userID = request.user, #foreign key
             todoID = str(todo.pk)
         )
         userTodo.save()
