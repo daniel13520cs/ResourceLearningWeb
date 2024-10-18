@@ -1,9 +1,11 @@
 # views.py
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
-from .models import Event
+from .models import Event, UserEvents
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages  # Import messages
+
 
 # Function to add a new event
 @login_required
@@ -14,7 +16,7 @@ def add_event(request):
         startTime = request.POST.get('startTime')
         location = request.POST.get('location')
         URL = request.POST.get('URL')
-        
+
         # Convert the start time string to a datetime object
         try:
             startTime = datetime.fromisoformat(startTime)  # Convert the ISO format string to a datetime object
@@ -29,9 +31,14 @@ def add_event(request):
             startTime=startTime,
             location=location,
             URL=URL or None,
-            ownerUserID = str(request.user.id)
+            ownerUserID = request.user.id
         )
         event.save()
+        userEvents = UserEvents(
+            userID = event.ownerUserID,
+            eventID = str(event.pk)
+        )
+        userEvents.save()
         return redirect('list_events')  # Redirect to the event list
     return render(request, 'events/add_event.html')  # Render the form template
 
@@ -39,7 +46,9 @@ def add_event(request):
 @login_required
 def list_events(request):
     print(request.user.id)
-    events = Event.objects.filter(ownerUserID=str(request.user.id))  # Retrieve all events from the database
+    userEvents = UserEvents.objects.filter(userID = request.user.id)
+    event_ids = [user_events.eventID for user_events in userEvents]
+    events = Event.objects.filter(id__in = event_ids)
     return render(request, 'events/list_events.html', {'events': events})  # Render the template with events
 
 # Function to delete an event
@@ -47,11 +56,14 @@ def list_events(request):
 def delete_event(request, event_id):
     try:
         event = Event.objects.get(id=event_id)
+        userEvent = userEvent.objects.get(eventID=event_id, userID=request.user.id)  # Check for user ownership
     except Event.DoesNotExist:
         raise Http404("Event not found")
     
     if request.method == 'POST':
-        event.delete()  # Delete the event
+        if str(request.user.id) == event.ownerUserID:
+            event.delete()
+        userEvent.delete()
         return redirect('list_events')  # Redirect to the event list
 
     return render(request, 'events/delete_event.html', {'event': event})  # Render confirmation page
@@ -63,6 +75,10 @@ def update_event(request, event_id):
         event = Event.objects.get(id=event_id)
     except Event.DoesNotExist:
         raise Http404("Event not found")
+
+    if str(request.user.id) != event.ownerUserID:
+        messages.error(request, "You are not authorized to update this event.")  # Add an error message
+        return redirect('list_events')  # Redirect to the event list        
 
     if request.method == 'POST':
         event.title = request.POST.get('title', event.title)  # Update title

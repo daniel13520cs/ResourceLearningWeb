@@ -23,6 +23,8 @@
                     <p>Created at: {{ todo.created_at }}</p>
                     <a href="{% url 'delete_todo' todo.id %}">Delete</a>
                 </li>
+                {% empty %}
+                <li>No todos available.</li>
             {% endfor %}
         </ul>
     </body>
