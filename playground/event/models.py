@@ -21,14 +21,14 @@ class UserTodo(models.Model):
     todoID = models.CharField(max_length=24)  # This remains a CharField to store MongoDB ObjectId
 
     def __str__(self):
-        return f'{self.user.username} - {self.todo.title}'
+        return f'userID: {self.userID} - Todo ID:{self.todoID}'
     
 class UserEvents(models.Model):
     userID = models.ForeignKey(User, on_delete=models.CASCADE)  # Link to User table
     eventID = models.CharField(max_length=24)  # Store MongoDB ObjectId as a string (Event ID)
 
     def __str__(self):
-        return f'{self.userID.username} - Event ID: {self.eventID}'
+        return f'userID: {self.userID} - Event ID: {self.eventID}'
     
     
     
