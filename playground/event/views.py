@@ -3,7 +3,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 from .models import Event, UserEvents
 from datetime import datetime
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages  # Import messages
 from mongoengine.queryset.visitor import Q
 from django.contrib.auth.models import User
@@ -11,7 +12,6 @@ from MLAlgo.EventTagger import EventTagger
 from MLAlgo.ClusteringStrategy import ClusteringStrategy, KNNStrategy
 from event.models import Event
 from django.contrib import messages
-
 
 # Function to add a new event
 @login_required
@@ -196,7 +196,9 @@ def publish_event(request, event_id):
             messages.success(request, 'The event is successfully published!')
     return redirect('list_events')
     
+
 @login_required
+@user_passes_test(lambda user: user.is_superuser)
 def retag_all_events(request):
     if request.method == 'POST':
         knn_strategy = KNNStrategy(n_neighbors=3)
@@ -206,6 +208,7 @@ def retag_all_events(request):
     return redirect('manage')
 
 @login_required
+@user_passes_test(lambda user: user.is_superuser)
 def clear_all_event_tags(request):
     if request.method == 'POST':
         # Fetch all public events from the database
