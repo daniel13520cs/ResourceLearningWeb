@@ -16,7 +16,7 @@
     <ul>
         {% for event in events %}
             <li>
-                <strong>{{ event.title }}</strong><br>
+                <strong>Title: {{ event.title }}</strong><br>
                 <p>Description: {{ event.description }}</p>
                 <p>Start Time: {{ event.startTime }}</p>
                 {% if event.location %}
@@ -25,15 +25,14 @@
                 {% if event.URL %}
                     URL: <a href="{{ event.URL }}">{{ event.URL }}</a><br>
                 {% endif %}
-                <button onclick="location.href='{% url 'update_event' event.id %}'">Edit</button>
-                <button onclick="location.href='{% url 'delete_event' event.id %}'">Delete</button>
-
-
-            <!-- Form for Publish button -->
-            <form action="{% url 'publish_event' event.id %}" method="POST" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit">Publish</button>
-            </form>
+                {% if event.ownerUserID == request.user.id %} 
+                    <button onclick="location.href='{% url 'update_event' event.id %}'">Edit</button>
+                    <button onclick="location.href='{% url 'delete_event' event.id %}'">Delete</button>
+                    <form action="{% url 'publish_event' event.id %}" method="POST" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit">Publish</button>
+                    </form>
+                {% endif %}
             </li>
         {% empty %}
             <li>No events available.</li>

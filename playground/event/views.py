@@ -100,7 +100,7 @@ def delete_event(request, event_id):
         raise Http404("Event not found")
     
     if request.method == 'POST':
-        if str(request.user.id) == event.ownerUserID:
+        if request.user.id == event.ownerUserID:
             event.delete()
         userEvent.delete()
         return redirect('list_events')  # Redirect to the event list

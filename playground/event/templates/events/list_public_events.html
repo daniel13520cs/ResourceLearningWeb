@@ -15,7 +15,7 @@
     <ul>
         {% for event in events %}
             <li>
-                <strong>{{ event.title }}</strong><br>
+                <strong>Title: {{ event.title }}</strong><br>
                 <p>Description: {{ event.description }}</p>
                 <p>Start Time: {{ event.startTime }}</p>
                 {% if event.location %}
@@ -24,14 +24,16 @@
                 {% if event.URL %}
                     URL: <a href="{{ event.URL }}">{{ event.URL }}</a><br>
                 {% endif %}
-                <form method="POST" action="{% url 'optIn_publicEvents' event.pk %}">
-                    {% csrf_token %}
-                    <button type="submit">Opt In</button>
-                </form>    
-                <form method="POST" action="{% url 'optOut_publicEvents' event.pk %}">
-                    {% csrf_token %}
-                    <button type="submit">Opt Out</button>
-                </form>                  
+                {% if event.ownerUserID != request.user.id %}
+                    <form method="POST" action="{% url 'optIn_publicEvents' event.pk %}">
+                        {% csrf_token %}
+                        <button type="submit">Opt In</button>
+                    </form>    
+                    <form method="POST" action="{% url 'optOut_publicEvents' event.pk %}">
+                        {% csrf_token %}
+                        <button type="submit">Opt Out</button>
+                    </form>    
+                {% endif %}              
             </li>
         {% empty %}
             <li>No public events available.</li>
