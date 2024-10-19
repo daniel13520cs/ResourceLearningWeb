@@ -42,7 +42,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://chihchiendjangotodov3.azurewebsites.net',  # Add your Azure URL with https
+    'https://chihchienhsiao.azurewebsites.net',  # Add your Azure URL with https
     'https://chihchiendjangotodo.azurewebsites.net',
 ]
 
@@ -59,11 +59,20 @@ INSTALLED_APPS = [
     'django_mongoengine.mongo_admin',
     'todos.apps.todosConfig',
     'polls.apps.PollsConfig',
+    'event.apps.EventConfig',
     'debug_toolbar',
 ]
+
+
+LOGIN_URL = 'login'  # URL to redirect to for login
+SESSION_COOKIE_AGE = 3600  # 1 hr
+
+# If you want sessions to expire when the browser is closed, set this to True:
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Keep users logged in after closing the browser
 USER_APPS = [
     'todos',
     'polls',
+    'event',
 ]
 
 MIDDLEWARE = [

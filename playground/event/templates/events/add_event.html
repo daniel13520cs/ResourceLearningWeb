@@ -1,0 +1,38 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Event</title>
+    <link rel="stylesheet" href="{% static "events/style.css" %}">
+</head>
+<body>
+    <h1>Add Event</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title" required><br><br>
+
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" required></textarea><br><br>
+
+        <label for="startTime">Start Time:</label><br>
+        <input type="datetime-local" id="startTime" name="startTime" required><br><br>
+
+        <label for="location">Location:</label><br>
+        <input type="text" id="location" name="location"><br><br>
+
+        <label for="URL">URL:</label><br>
+        <input type="url" id="URL" name="URL"><br><br>
+
+        <button type="submit">Add Event</button>
+    </form>
+    <a href="{% url 'list_events' %}">Back to Event List</a>
+</body>
+</html>
+{% endblock %}
+

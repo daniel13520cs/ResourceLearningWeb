@@ -5,7 +5,7 @@
 {% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('ChihChien Hsiao') }}{% endblock %}
 
 {% block branding %}
-<div id="site-name"><a href="{% url 'list_todos' %}">ChihChien Hsiao</a></div>
+<div id="site-name"><a href="{% url 'list_events' %}">{% translate 'Welcome,' %} {{ user }}</a></div>
 {% if user.is_anonymous %}
   {% include "admin/color_theme_toggle.html" %}
 {% endif %}
@@ -15,7 +15,22 @@
 
 {% block breadcrumbs %}
 <div class="breadcrumbs">
-  <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
-  {% if title %} &rsaquo; {{ title }}{% endif %}
+  <a href="{% url 'list_publicEvents' %}">{% translate 'Home' %}</a>
+  <span style="margin: 0 10px;">|</span>
+  <a href="{% url 'list_todos' %}">{% translate 'Todos' %}</a>
+  <span style="margin: 0 10px;">|</span>
+  <a href="{% url 'list_events' %}">{% translate 'Events' %}</a>
+  <span style="margin: 0 10px;">|</span>
+  <a href="{% url 'polls:index' %}">{% translate 'Feedback' %}</a>
+  <span style="margin: 0 10px;">|</span>
+  <a href="{% url 'login' %}">{% translate 'Login' %}</a>
+  <span style="margin: 0 10px;">|</span>
+  <a href="{% url 'logout' %}">{% translate 'Logout' %}</a>
+  <span style="margin: 0 10px;">|</span>
+  <a href="{% url 'register' %}">{% translate 'Register' %}</a>
+  {% if user.is_staff %}
+    <span style="margin: 0 10px;">|</span>
+    <a href="{% url 'manage' %}">{% translate 'Manage' %}</a>
+  {% endif %}
 </div>
 {% endblock %}
