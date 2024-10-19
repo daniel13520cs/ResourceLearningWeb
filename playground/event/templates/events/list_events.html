@@ -22,6 +22,7 @@
                 {% if event.location %}
                     <p>Location: {{ event.location }}</p>
                 {% endif %}
+                <p>Owner: {{ event.ownerUsername }}</p>
                 {% if event.URL %}
                     URL: <a href="{{ event.URL }}">{{ event.URL }}</a><br>
                 {% endif %}

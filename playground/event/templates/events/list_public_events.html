@@ -24,6 +24,7 @@
                 {% if event.URL %}
                     URL: <a href="{{ event.URL }}">{{ event.URL }}</a><br>
                 {% endif %}
+                <p>Owner: {{ event.ownerUsername }}</p>
                 {% if event.ownerUserID != request.user.id %}
                     <form method="POST" action="{% url 'optIn_publicEvents' event.pk %}">
                         {% csrf_token %}

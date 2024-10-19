@@ -6,6 +6,7 @@ from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages  # Import messages
 from mongoengine.queryset.visitor import Q
+from django.contrib.auth.models import User
 
 
 # Function to add a new event
@@ -49,13 +50,57 @@ def list_events(request):
     userEvents = UserEvents.objects.filter(userID = request.user.id)
     event_ids = [user_events.eventID for user_events in userEvents]
     events = Event.objects.filter(id__in = event_ids)
-    return render(request, 'events/list_events.html', {'events': events})  # Render the template with events
+    event_list = []  # This will store new instances with the additional field
+
+    for event in events:
+        try:
+            owner_user = User.objects.get(id=event.ownerUserID)
+            owner_username = owner_user.username  # Get the username
+        except User.DoesNotExist:
+            owner_username = "Unknown"  # Handle the case where the user does not exist
+        
+        # Create a new dictionary to hold event data along with the owner username
+        event_data = {
+            'pk': event.id,
+            'id': event.id,
+            'title': event.title,
+            'description': event.description,
+            'startTime': event.startTime,
+            'location': event.location,
+            'URL': event.URL,
+            'ownerUsername': owner_username,  # Add the owner username here
+        }
+        event_list.append(event_data)  # Add the new event data to the list
+
+    return render(request, 'events/list_events.html', {'events': event_list})  # Render the template with events
 
 def list_publicEvents(request):
-    publicEvents = Event.objects.filter(isPublic = True)
-    return render(request, 'events/list_public_events.html', {'events': publicEvents})  # Render the template with events
+    publicEvents = Event.objects.filter(isPublic=True)
+    event_list = []  # This will store new instances with the additional field
 
-@login_required
+    for event in publicEvents:
+        try:
+            owner_user = User.objects.get(id=event.ownerUserID)
+            owner_username = owner_user.username  # Get the username
+        except User.DoesNotExist:
+            owner_username = "Unknown"  # Handle the case where the user does not exist
+        
+        # Create a new dictionary to hold event data along with the owner username
+        event_data = {
+            'pk': event.id,
+            'id': event.id,
+            'title': event.title,
+            'description': event.description,
+            'startTime': event.startTime,
+            'location': event.location,
+            'URL': event.URL,
+            'ownerUsername': owner_username,  # Add the owner username here
+        }
+        event_list.append(event_data)  # Add the new event data to the list
+
+    return render(request, 'events/list_public_events.html', {'events': event_list})
+
+
 def optIn_publicEvents(request, event_id):
     if request.method == 'POST':
         # Check if the user has already opted into this event
