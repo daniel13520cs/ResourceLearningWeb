@@ -68,6 +68,7 @@ def list_events(request):
             'startTime': event.startTime,
             'location': event.location,
             'URL': event.URL,
+            'ownerUserID' : event.ownerUserID,
             'ownerUsername': owner_username,  # Add the owner username here
         }
         event_list.append(event_data)  # Add the new event data to the list
@@ -94,6 +95,7 @@ def list_publicEvents(request):
             'startTime': event.startTime,
             'location': event.location,
             'URL': event.URL,
+            'ownerUserID' : event.ownerUserID,
             'ownerUsername': owner_username,  # Add the owner username here
         }
         event_list.append(event_data)  # Add the new event data to the list
