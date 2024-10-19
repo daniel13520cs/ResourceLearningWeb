@@ -32,7 +32,7 @@ class LoginView(LoginView):
     template_name = 'registration/login.html'
 
     # Specify the URL to redirect to after successful login
-    success_url = reverse_lazy('list_events')
+    success_url = reverse_lazy('list_publicEvents')
 
     def get_success_url(self):
         # Override this method to customize the success URL after login

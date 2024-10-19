@@ -55,11 +55,38 @@ def list_publicEvents(request):
     publicEvents = Event.objects.filter(isPublic = True)
     return render(request, 'events/list_public_events.html', {'events': publicEvents})  # Render the template with events
 
-def optIn_publicEvents(request, event_id): 
-    userEvent = UserEvents(
-        userID = request.user,
-        eventID = str(event_id)
-    )
+@login_required
+def optIn_publicEvents(request, event_id):
+    if request.method == 'POST':
+        # Check if the user has already opted into this event
+        existing_user_event = UserEvents.objects.filter(userID=request.user, eventID=str(event_id)).first()
+        
+        if existing_user_event:
+            messages.warning(request, 'You have already opted into this event.')
+        else:
+            # Create a new UserEvent if it doesn't exist
+            user_event = UserEvents(
+                userID=request.user,
+                eventID=str(event_id)
+            )
+            user_event.save()  # Save the new UserEvent record
+            messages.success(request, 'You have successfully opted into the event!')
+    
+    return redirect('list_publicEvents')  # Redirect to the event list
+
+@login_required
+def optOut_publicEvents(request, event_id):
+    if request.method == 'POST':
+        # Check if the user has already opted into this event
+        existing_user_event = UserEvents.objects.filter(userID=request.user, eventID=str(event_id)).first()
+        
+        if existing_user_event:
+            # If the event exists, delete the user's opt-in record
+            existing_user_event.delete()
+            messages.success(request, 'You have successfully opted out of the event.')
+        else:
+            messages.warning(request, 'You have not opted into this event yet.')
+    
     return redirect('list_publicEvents')  # Redirect to the event list
 
 

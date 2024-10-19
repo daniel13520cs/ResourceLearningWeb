@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{% static "events/style.css" %}">
 </head>
 <body>
-    <h1>Events</h1>
+    <h1>Public Events to participate</h1>
     <ul>
         {% for event in events %}
             <li>
@@ -24,7 +24,14 @@
                 {% if event.URL %}
                     URL: <a href="{{ event.URL }}">{{ event.URL }}</a><br>
                 {% endif %}
-                <button onclick="location.href='{% url 'optIn_publicEvents' event.pk %}'">Opt In</button>
+                <form method="POST" action="{% url 'optIn_publicEvents' event.pk %}">
+                    {% csrf_token %}
+                    <button type="submit">Opt In</button>
+                </form>    
+                <form method="POST" action="{% url 'optOut_publicEvents' event.pk %}">
+                    {% csrf_token %}
+                    <button type="submit">Opt Out</button>
+                </form>                  
             </li>
         {% empty %}
             <li>No public events available.</li>
