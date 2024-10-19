@@ -28,11 +28,7 @@
                     <form method="POST" action="{% url 'optIn_publicEvents' event.pk %}">
                         {% csrf_token %}
                         <button type="submit">Opt In</button>
-                    </form>    
-                    <form method="POST" action="{% url 'optOut_publicEvents' event.pk %}">
-                        {% csrf_token %}
-                        <button type="submit">Opt Out</button>
-                    </form>    
+                    </form>      
                 {% endif %}              
             </li>
         {% empty %}

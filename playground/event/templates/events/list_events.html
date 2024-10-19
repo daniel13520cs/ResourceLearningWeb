@@ -32,6 +32,11 @@
                         {% csrf_token %}
                         <button type="submit">Publish</button>
                     </form>
+                {% else %}
+                    <form method="POST" action="{% url 'optOut_publicEvents' event.pk %}">
+                        {% csrf_token %}
+                        <button type="submit">Opt Out</button>
+                    </form>  
                 {% endif %}
             </li>
         {% empty %}

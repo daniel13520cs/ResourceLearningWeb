@@ -87,7 +87,7 @@ def optOut_publicEvents(request, event_id):
         else:
             messages.warning(request, 'You have not opted into this event yet.')
     
-    return redirect('list_publicEvents')  # Redirect to the event list
+    return redirect('list_events')  # Redirect to the event list
 
 
 # Function to delete an event
