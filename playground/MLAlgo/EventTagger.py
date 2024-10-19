@@ -1,6 +1,7 @@
 from sentence_transformers import SentenceTransformer
 from .ClusteringStrategy import ClusteringStrategy
 from event.models import Event
+import numpy as np
 
 class EventTagger:
     def __init__(self, clustering_strategy: ClusteringStrategy):

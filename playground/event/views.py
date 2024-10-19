@@ -7,6 +7,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages  # Import messages
 from mongoengine.queryset.visitor import Q
 from django.contrib.auth.models import User
+from MLAlgo.EventTagger import EventTagger
+from MLAlgo.ClusteringStrategy import ClusteringStrategy, KNNStrategy
+from event.models import Event
+from django.contrib import messages
 
 
 # Function to add a new event
@@ -192,3 +196,32 @@ def publish_event(request, event_id):
             messages.success(request, 'The event is successfully published!')
     return redirect('list_events')
     
+@login_required
+def retag_all_events(request):
+    if request.method == 'POST':
+        knn_strategy = KNNStrategy(n_neighbors=3)
+        tagger = EventTagger(clustering_strategy=knn_strategy)
+        tagger.autotag_public_events()
+    messages.success(request, "All tags have been classified from all events.")
+    return redirect('manage')
+
+@login_required
+def clear_all_event_tags(request):
+    if request.method == 'POST':
+        # Fetch all public events from the database
+        events = Event.objects.filter(isPublic=True)
+
+        # Check if events are actually being fetched
+        if not events:
+            messages.error(request, "No public events found to clear tags from.")
+            return redirect('manage')
+        
+        # Clear tags for each event
+        for event in events:
+            event.tags = []  # Clear all tags
+            event.save()  # Ensure the event is saved after clearing
+
+        # Add success message after tags are cleared
+        messages.success(request, "All public events tags have been cleared.")
+
+    return redirect('manage')

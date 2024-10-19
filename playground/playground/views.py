@@ -6,9 +6,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView,LogoutView
-from MLAlgo.autoTag import autotag_publicEvents_via_dbscan
-from MLAlgo.EventTagger import EventTagger
-from MLAlgo.ClusteringStrategy import ClusteringStrategy, KNNStrategy
+
+
 
 class App_list_view(generic.TemplateView):
     # Get the list of installed apps
@@ -31,10 +30,6 @@ def register(request):
     return render(request, 'registration/register.html', {'form': form})
 
 def manage(request):
-    if request.method == 'POST':
-        knn_strategy = KNNStrategy(n_neighbors=3)
-        tagger = EventTagger(clustering_strategy=knn_strategy)
-        tagger.autotag_public_events()
     return render(request, 'admin/manage.html')
         
 class LoginView(LoginView):
