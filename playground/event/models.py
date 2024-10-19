@@ -1,5 +1,5 @@
 from django.db import models
-from mongoengine import Document, StringField, DateTimeField, URLField, IntField,BooleanField
+from mongoengine import Document, StringField, DateTimeField, URLField, IntField,BooleanField,ListField
 from datetime import datetime
 from django.contrib.auth.models import User
 
@@ -12,6 +12,7 @@ class Event(Document):
     URL = URLField(blank=True, null=True)  # Allow this field to be empty
     ownerUserID = IntField(required=True)
     isPublic = BooleanField(default=False)
+    tags = ListField(StringField(), default=[])  # Field to store assigned tags
 
     def __str__(self):
         return self.title

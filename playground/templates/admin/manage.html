@@ -1,0 +1,11 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+{% load static %}
+<h2>Manage</h2>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">ReTagAllEvents</button>
+</form>
+{% endblock %}
+
