@@ -104,7 +104,7 @@ def list_publicEvents(request):
 
     return render(request, 'events/list_public_events.html', {'events': event_list})
 
-
+@login_required
 def optIn_publicEvents(request, event_id):
     if request.method == 'POST':
         # Check if the user has already opted into this event
