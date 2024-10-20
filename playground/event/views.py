@@ -8,8 +8,6 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages  # Import messages
 from mongoengine.queryset.visitor import Q
 from django.contrib.auth.models import User
-# from MLAlgo.EventTagger import EventTagger
-# from MLAlgo.ClusteringStrategy import ClusteringStrategy, KNNStrategy
 from event.models import Event
 from django.contrib import messages
 
