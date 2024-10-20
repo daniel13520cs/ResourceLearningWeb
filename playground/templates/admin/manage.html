@@ -3,13 +3,5 @@
 {% block content %}
 {% load static %}
 <h2>Manage</h2>
-<form method="post" action="{% url 'retag_all_events' %}">
-    {% csrf_token %}
-    <button type="submit">ReTagAllEvents</button>
-</form>
-<form method="post" action="{% url 'clear_all_event_tags' %}">
-    {% csrf_token %}
-    <button type="submit">ClearAllEventsTags</button>
-</form>
 {% endblock %}
 
