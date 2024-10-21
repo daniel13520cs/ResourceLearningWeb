@@ -10,8 +10,6 @@ from mongoengine.queryset.visitor import Q
 from django.contrib.auth.models import User
 from event.models import Event
 from django.contrib import messages
-from ml.MLAlgo import ClusteringStrategy,EventTagger
-from ml.MLAlgo.ClusteringStrategy import KNNStrategy
 
 # Function to add a new event
 @login_required
