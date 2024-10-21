@@ -13,7 +13,9 @@ class Event(Document):
     ownerUserID = IntField(required=True)
     isPublic = BooleanField(default=False)
     tags = ListField(StringField(), default=[])  # Field to store assigned tags
-
+    image = StringField(blank=True, null=True, max_length=200)  # Restrict length to 200 chars
+    venue = StringField(blank=True, null=True, max_length=200)  # Restrict length to 200 chars
+    
     def __str__(self):
         return self.title
 
