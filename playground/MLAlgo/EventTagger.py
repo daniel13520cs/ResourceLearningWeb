@@ -1,6 +1,6 @@
 from sentence_transformers import SentenceTransformer
-from .ClusteringStrategy import ClusteringStrategy
-from event.models import Event
+import ClusteringStrategy
+from webCrawler.crawler import Event
 import numpy as np
 
 class EventTagger:
@@ -9,7 +9,7 @@ class EventTagger:
         self.clustering_strategy = clustering_strategy
 
     def autotag_public_events(self):
-        # Fetch all events from the database
+        # Fetch all public events from the database
         events = Event.objects(isPublic=True)
         
         # Combine title and description into one text for each event
@@ -32,7 +32,8 @@ class EventTagger:
                     event.tags.append(label)
                     event.save()
             
-            print(f"Event '{event.title}' assigned to neighbors: {neighbor_labels}")
+            # Print the event's title and the assigned tags
+            print(f"Event '{event.title}' has been tagged with: {', '.join(neighbor_labels)}")
 
     def autotag_single_event(self, event_id):
         # Fetch the event by ID from MongoDB
@@ -77,7 +78,8 @@ class EventTagger:
                 event.tags.append(label)
                 event.save()
         
-        print(f"Event '{event.title}' assigned to neighbors: {new_event_labels}")
+        # Print the event's title and the assigned tags
+        print(f"Event '{event.title}' has been tagged with: {', '.join(new_event_labels)}")
 
     def recommend_non_opted_in_public_events(self, user_id):
         # Fetch the user's opted-in events
@@ -101,4 +103,17 @@ class EventTagger:
             if set(event.tags) & opted_in_tags:  # Check for shared tags
                 recommended_events.append(event)
 
+        # Print recommended events' titles and tags
+        for event in recommended_events:
+            print(f"Recommended Event: '{event.title}' with tags: {', '.join(event.tags)}")
+
         return recommended_events
+
+# Main execution
+if __name__ == "__main__":
+    # Instantiate the EventTagger with your clustering strategy
+    clustering_strategy = ClusteringStrategy.KNNStrategy()  # Replace with actual strategy implementation
+    event_tagger = EventTagger(clustering_strategy)
+
+    # Call the autotag_public_events method to auto-tag the public events
+    event_tagger.autotag_public_events()

@@ -146,5 +146,5 @@ def crawl_and_store():
     else:
         print("Events not stored in the database.")
 
-# Execute the main function
-crawl_and_store()
+if __name__ == "__main__":
+    crawl_and_store()
