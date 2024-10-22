@@ -112,7 +112,8 @@ def print_events(events):
 # Main function to crawl, print, and conditionally store events
 def crawl_and_store():
     # Fetch random book events
-    book_events = crawl_books(10)  # Fetch 10 random books
+    numOfBooksFetch = input("Enter number of books to fetch:")
+    book_events = crawl_books(numOfBooksFetch or  40)
 
     # Combine both lists of events
     events = book_events

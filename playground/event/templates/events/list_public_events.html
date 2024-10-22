@@ -49,12 +49,31 @@
                         {% csrf_token %}
                         <button type="submit">Opt In</button>
                     </form>      
-                {% endif %}              
+                {% endif %}
             </li>
         {% empty %}
             <li>No public events available.</li>
         {% endfor %}
     </ul>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if events.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ events.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ events.number }} of {{ events.paginator.num_pages }}.
+            </span>
+
+            {% if events.has_next %}
+                <a href="?page={{ events.next_page_number }}">next</a>
+                <a href="?page={{ events.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
 </body>
 </html>
 {% endblock %}

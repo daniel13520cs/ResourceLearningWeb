@@ -4,13 +4,14 @@ from django.http import Http404
 from .models import Event, UserEvents
 from datetime import datetime
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages  # Import messages
 from mongoengine.queryset.visitor import Q
 from django.contrib.auth.models import User
 from event.models import Event
 from django.contrib import messages
 from collections import Counter
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 # Function to add a new event
 @login_required
@@ -45,22 +46,20 @@ def add_event(request):
         return redirect('list_events')  # Redirect to the event list
     return render(request, 'events/add_event.html')  # Render the form template
 
-# Function to list all events
 @login_required
 def list_events(request):
-    userEvents = UserEvents.objects.filter(userID = request.user.id)
+    userEvents = UserEvents.objects.filter(userID=request.user.id)
     event_ids = [user_events.eventID for user_events in userEvents]
-    events = Event.objects.filter(id__in = event_ids)
-    event_list = []  # This will store new instances with the additional field
+    events = Event.objects.filter(id__in=event_ids)
 
+    event_list = []  # This will store new instances with the additional field
     for event in events:
         try:
             owner_user = User.objects.get(id=event.ownerUserID)
-            owner_username = owner_user.username  # Get the username
+            owner_username = owner_user.username
         except User.DoesNotExist:
-            owner_username = "Unknown"  # Handle the case where the user does not exist
+            owner_username = "Unknown"
         
-        # Create a new dictionary to hold event data along with the owner username
         event_data = {
             'pk': event.id,
             'id': event.id,
@@ -68,25 +67,34 @@ def list_events(request):
             'description': event.description,
             'startTime': event.startTime,
             'URL': event.URL,
-            'ownerUserID' : event.ownerUserID,
-            'ownerUsername': owner_username,  # Add the owner username here
+            'ownerUserID': event.ownerUserID,
+            'ownerUsername': owner_username,
         }
-        event_list.append(event_data)  # Add the new event data to the list
+        event_list.append(event_data)
 
-    return render(request, 'events/list_events.html', {'events': event_list})  # Render the template with events
+    # Paginate the event list
+    paginator = Paginator(event_list, 5)  # Show 5 events per page
+    page = request.GET.get('page', 1)
+    try:
+        events = paginator.page(page)
+    except PageNotAnInteger:
+        events = paginator.page(1)
+    except EmptyPage:
+        events = paginator.page(paginator.num_pages)
+
+    return render(request, 'events/list_events.html', {'events': events})
 
 def list_publicEvents(request):
     publicEvents = Event.objects.filter(isPublic=True)
+    
     event_list = []  # This will store new instances with the additional field
-
     for event in publicEvents:
         try:
             owner_user = User.objects.get(id=event.ownerUserID)
-            owner_username = owner_user.username  # Get the username
+            owner_username = owner_user.username
         except User.DoesNotExist:
-            owner_username = "Unknown"  # Handle the case where the user does not exist
-              
-        # Create a new dictionary to hold event data along with the owner username
+            owner_username = "Unknown"
+        
         event_data = {
             'pk': event.id,
             'id': event.id,
@@ -94,15 +102,24 @@ def list_publicEvents(request):
             'description': event.description,
             'startTime': event.startTime,
             'URL': event.URL,
-            'ownerUserID' : event.ownerUserID,
-            'ownerUsername': owner_username,  # Add the owner username here
+            'ownerUserID': event.ownerUserID,
+            'ownerUsername': owner_username,
         }
-        event_list.append(event_data)  # Add the new event data to the list
+        event_list.append(event_data)
+
+    # Paginate the event list
+    paginator = Paginator(event_list, 5)  # Show 5 events per page
+    page = request.GET.get('page', 1)
+    try:
+        events = paginator.page(page)
+    except PageNotAnInteger:
+        events = paginator.page(1)
+    except EmptyPage:
+        events = paginator.page(paginator.num_pages)
 
     topKEvent = GetTopKRecommendationEvents(request, publicEvents)
 
-    return render(request, 'events/list_public_events.html', {'events': event_list, 'recommendedEvents': topKEvent})
-
+    return render(request, 'events/list_public_events.html', {'events': events, 'recommendedEvents': topKEvent})
 @login_required
 def optIn_publicEvents(request, event_id):
     if request.method == 'POST':
@@ -234,6 +251,7 @@ def GetTopKRecommendationEvents(request, publicEvents, K=5):
     # Create a JSON response with event details
     response_data = [
         {
+            'pk': event.id,
             "id": event.id,
             "title": event.title,
             "description": event.description,
@@ -245,7 +263,7 @@ def GetTopKRecommendationEvents(request, publicEvents, K=5):
         for event in top_k_events
     ]
     
-    return top_k_events    
+    return response_data    
 
 @login_required
 @user_passes_test(lambda user: user.is_superuser)
