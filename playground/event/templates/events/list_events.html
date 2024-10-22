@@ -23,7 +23,7 @@
                 {% if event.URL %}
                     URL: <a href="{{ event.URL }}">{{ event.URL }}</a><br>
                 {% endif %}
-                {% if event.ownerUserID == request.user.id %} 
+                {% if event.ownerUserID == request.user.id %}
                     <button onclick="location.href='{% url 'update_event' event.id %}'">Edit</button>
                     <button onclick="location.href='{% url 'delete_event' event.id %}'">Delete</button>
                     <form action="{% url 'publish_event' event.id %}" method="POST" style="display:inline;">
@@ -34,14 +34,32 @@
                     <form method="POST" action="{% url 'optOut_publicEvents' event.pk %}">
                         {% csrf_token %}
                         <button type="submit">Opt Out</button>
-                    </form>  
+                    </form>
                 {% endif %}
             </li>
         {% empty %}
             <li>No events available.</li>
         {% endfor %}
     </ul>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if events.has_previous %}
+                <a href="?page=1">&laquo; First</a>
+                <a href="?page={{ events.previous_page_number }}">Previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ events.number }} of {{ events.paginator.num_pages }}.
+            </span>
+
+            {% if events.has_next %}
+                <a href="?page={{ events.next_page_number }}">Next</a>
+                <a href="?page={{ events.paginator.num_pages }}">Last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
 </body>
 </html>
 {% endblock %}
-
