@@ -14,42 +14,57 @@
     <h1>Public Events Recommendation</h1>
     <ul>
         {% for event in recommendedEvents %}
-            <li>
-                <strong>Title: {{ event.title }}</strong><br>
-                <p>Description: {{ event.description }}</p>
-                <p>Start Time: {{ event.startTime }}</p>
-                {% if event.URL %}
-                    URL: <a href="{{ event.URL }}">{{ event.URL }}</a><br>
+            <li style="display: flex; align-items: flex-start; margin-bottom: 15px;">
+                {% if event.image %}
+                    <div style="margin-right: 15px;">
+                        <img src="{{ event.image }}" alt="Event Image" style="max-width: 100px; max-height: 100px;">
+                    </div>
                 {% endif %}
-                <p>Owner: {{ event.ownerUsername }}</p>
-                {% if event.ownerUserID != request.user.id %}
-                    <form method="POST" action="{% url 'optIn_publicEvents' event.pk %}">
-                        {% csrf_token %}
-                        <button type="submit">Opt In</button>
-                    </form>      
-                {% endif %}              
+                <div style="flex-grow: 1;">
+                    <strong>Title: {{ event.title }}</strong><br>
+                    <p>Description: {{ event.description }}</p>
+                    <p>Start Time: {{ event.startTime }}</p>
+                    {% if event.URL %}
+                        URL: <a href="{{ event.URL }}">{{ event.URL }}</a><br>
+                    {% endif %}
+                    <p>Owner: {{ event.ownerUsername }}</p>
+                    {% if event.ownerUserID != request.user.id %}
+                        <form method="POST" action="{% url 'optIn_publicEvents' event.pk %}">
+                            {% csrf_token %}
+                            <button type="submit">Opt In</button>
+                        </form>      
+                    {% endif %}
+                </div>
             </li>
         {% empty %}
             <li>No Recommendation available.</li>
         {% endfor %}
     </ul>
-    <h1>Public Events to participate</h1>
+
+    <h1>Public Events to Participate</h1>
     <ul>
         {% for event in events %}
-            <li>
-                <strong>Title: {{ event.title }}</strong><br>
-                <p>Description: {{ event.description }}</p>
-                <p>Start Time: {{ event.startTime }}</p>
-                {% if event.URL %}
-                    URL: <a href="{{ event.URL }}">{{ event.URL }}</a><br>
+            <li style="display: flex; align-items: flex-start; margin-bottom: 15px;">
+                {% if event.image %}
+                    <div style="margin-right: 15px;">
+                        <img src="{{ event.image }}" alt="Event Image" style="max-width: 100px; max-height: 100px;">
+                    </div>
                 {% endif %}
-                <p>Owner: {{ event.ownerUsername }}</p>
-                {% if event.ownerUserID != request.user.id %}
-                    <form method="POST" action="{% url 'optIn_publicEvents' event.pk %}">
-                        {% csrf_token %}
-                        <button type="submit">Opt In</button>
-                    </form>      
-                {% endif %}
+                <div style="flex-grow: 1;">
+                    <strong>Title: {{ event.title }}</strong><br>
+                    <p>Description: {{ event.description }}</p>
+                    <p>Start Time: {{ event.startTime }}</p>
+                    {% if event.URL %}
+                        URL: <a href="{{ event.URL }}">{{ event.URL }}</a><br>
+                    {% endif %}
+                    <p>Owner: {{ event.ownerUsername }}</p>
+                    {% if event.ownerUserID != request.user.id %}
+                        <form method="POST" action="{% url 'optIn_publicEvents' event.pk %}">
+                            {% csrf_token %}
+                            <button type="submit">Opt In</button>
+                        </form>      
+                    {% endif %}
+                </div>
             </li>
         {% empty %}
             <li>No public events available.</li>
@@ -77,4 +92,3 @@
 </body>
 </html>
 {% endblock %}
-

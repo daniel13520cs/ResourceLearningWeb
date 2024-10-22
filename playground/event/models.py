@@ -12,7 +12,7 @@ class Event(Document):
     ownerUserID = IntField(required=True)
     isPublic = BooleanField(default=False)
     tags = ListField(StringField(), default=[])
-    image = StringField(blank=True, null=True, max_length=200)  # Restrict length to 200 chars
+    image = StringField(blank=True, null=True) 
     labels = ListField(StringField(), default=[])  # New field for labels
 
     def __str__(self):

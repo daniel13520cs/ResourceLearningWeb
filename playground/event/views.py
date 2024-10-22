@@ -69,6 +69,7 @@ def list_events(request):
             'URL': event.URL,
             'ownerUserID': event.ownerUserID,
             'ownerUsername': owner_username,
+            'image': event.image,
         }
         event_list.append(event_data)
 
@@ -104,6 +105,7 @@ def list_publicEvents(request):
             'URL': event.URL,
             'ownerUserID': event.ownerUserID,
             'ownerUsername': owner_username,
+            'image': event.image,
         }
         event_list.append(event_data)
 
@@ -153,6 +155,22 @@ def optOut_publicEvents(request, event_id):
             messages.warning(request, 'You have not opted into this event yet.')
     
     return redirect('list_events')  # Redirect to the event list
+
+@login_required
+def optOut_allOptedInEvents(request):
+    if request.method == 'POST':
+        # Retrieve all events the user has opted into
+        user_events = UserEvents.objects.filter(userID=request.user)
+
+        if user_events.exists():
+            # Delete all user's opt-in records
+            user_events.delete()
+            messages.success(request, 'You have successfully opted out of all events.')
+        else:
+            messages.warning(request, 'You have not opted into any events.')
+
+    return redirect('list_events')  # Redirect to the event list
+
 
 
 # Function to delete an event
@@ -258,7 +276,8 @@ def GetTopKRecommendationEvents(request, publicEvents, K=5):
             "startTime": event.startTime,
             "URL": event.URL,
             "tags": event.tags,
-            "ownerUsername": User.objects.get(id=event.ownerUserID).username
+            "ownerUsername": User.objects.get(id=event.ownerUserID).username,
+            "image": event.image,
         } 
         for event in top_k_events
     ]

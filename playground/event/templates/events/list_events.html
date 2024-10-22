@@ -15,27 +15,34 @@
     <button onclick="location.href='{% url 'add_event' %}'">Add New Event</button>
     <ul>
         {% for event in events %}
-            <li>
-                <strong>Title: {{ event.title }}</strong><br>
-                <p>Description: {{ event.description }}</p>
-                <p>Start Time: {{ event.startTime }}</p>
-                <p>Owner: {{ event.ownerUsername }}</p>
-                {% if event.URL %}
-                    URL: <a href="{{ event.URL }}">{{ event.URL }}</a><br>
-                {% endif %}
-                {% if event.ownerUserID == request.user.id %}
-                    <button onclick="location.href='{% url 'update_event' event.id %}'">Edit</button>
-                    <button onclick="location.href='{% url 'delete_event' event.id %}'">Delete</button>
-                    <form action="{% url 'publish_event' event.id %}" method="POST" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit">Publish</button>
-                    </form>
-                {% else %}
-                    <form method="POST" action="{% url 'optOut_publicEvents' event.pk %}">
-                        {% csrf_token %}
-                        <button type="submit">Opt Out</button>
-                    </form>
-                {% endif %}
+            <li style="display: flex; align-items: flex-start; margin-bottom: 15px;">
+                {% if event.image %}
+                    <div style="margin-right: 15px;">
+                        <img src="{{ event.image }}" alt="Event Image" style="max-width: 100px; max-height: 100px;">
+                    </div>
+                 {% endif %}
+                <div style="flex-grow: 1;">
+                    <strong>Title: {{ event.title }}</strong><br>
+                    <p>Description: {{ event.description }}</p>
+                    <p>Start Time: {{ event.startTime }}</p>
+                    <p>Owner: {{ event.ownerUsername }}</p>
+                    {% if event.URL %}
+                        URL: <a href="{{ event.URL }}">{{ event.URL }}</a><br>
+                    {% endif %}
+                    {% if event.ownerUserID == request.user.id %}
+                        <button onclick="location.href='{% url 'update_event' event.id %}'">Edit</button>
+                        <button onclick="location.href='{% url 'delete_event' event.id %}'">Delete</button>
+                        <form action="{% url 'publish_event' event.id %}" method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit">Publish</button>
+                        </form>
+                    {% else %}
+                        <form method="POST" action="{% url 'optOut_publicEvents' event.pk %}">
+                            {% csrf_token %}
+                            <button type="submit">Opt Out</button>
+                        </form>
+                    {% endif %}
+                </div>
             </li>
         {% empty %}
             <li>No events available.</li>

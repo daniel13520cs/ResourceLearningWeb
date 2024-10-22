@@ -1,6 +1,6 @@
 body {
     /* background: white url("images/todoBackground.jpg") no-repeat; */
-    background-size: autdo
+    background-size: auto;
 }
 
 ul {
@@ -9,10 +9,23 @@ ul {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     padding: 20px; /* Inner padding */
     list-style-type: none; /* Removes bullet points */
-    width:fit-content
+    width: fit-content
 }
 
 li {
+    display: flex; /* Flexbox layout */
+    align-items: flex-start; /* Align items to the start */
+    margin-bottom: 15px; /* Space between items */
     padding: 15px; /* Spacing within each item */
     border-bottom: 1px solid #e0e0e0; /* Divider between items */
+}
+
+li img {
+    max-width: 100px; /* Limit image width */
+    max-height: 100px; /* Limit image height */
+    margin-right: 15px; /* Space between image and text */
+}
+
+li > div {
+    flex-grow: 1; /* Allow text area to grow and take remaining space */
 }
