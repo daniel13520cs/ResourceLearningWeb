@@ -10,6 +10,7 @@ from mongoengine.queryset.visitor import Q
 from django.contrib.auth.models import User
 from event.models import Event
 from django.contrib import messages
+from collections import Counter
 
 # Function to add a new event
 @login_required
@@ -87,7 +88,7 @@ def list_publicEvents(request):
             owner_username = owner_user.username  # Get the username
         except User.DoesNotExist:
             owner_username = "Unknown"  # Handle the case where the user does not exist
-        
+              
         # Create a new dictionary to hold event data along with the owner username
         event_data = {
             'pk': event.id,
@@ -102,7 +103,9 @@ def list_publicEvents(request):
         }
         event_list.append(event_data)  # Add the new event data to the list
 
-    return render(request, 'events/list_public_events.html', {'events': event_list})
+    topKEvent = GetTopKRecommendationEvents(request, publicEvents)
+
+    return render(request, 'events/list_public_events.html', {'events': event_list, 'recommendedEvents': topKEvent})
 
 @login_required
 def optIn_publicEvents(request, event_id):
@@ -194,36 +197,89 @@ def publish_event(request, event_id):
             messages.success(request, 'The event is successfully published!')
     return redirect('list_events')
     
+def GetTopKRecommendationEvents(request, publicEvents, K=5):
+    if not request.user.is_authenticated:
+        return []
+    # Fetch the events the user has opted into
+    user_events = UserEvents.objects.filter(userID=request.user)
+
+    if not user_events:
+        messages.warning(request, 'You have not opted into any events.')
+
+    # Extract the event IDs and fetch the events
+    opted_in_event_ids = [ue.eventID for ue in user_events]
+    opted_in_events = Event.objects.filter(id__in=opted_in_event_ids)
+
+    # Get all tags from the user's opted-in events
+    user_tags = []
+    for event in opted_in_events:
+        user_tags.extend(event.tags)  # Assuming `tags` is a list field in your Event model
     
+    # Count the frequency of each tag
+    tag_counter = Counter(user_tags)
+    
+    # Fetch public events that the user has not opted into
+    public_events = publicEvents.filter(Q(id__nin=opted_in_event_ids))  # Use `__nin` for "not in"
+
+    # Rank the public events based on matching tags
+    event_rankings = []
+    for event in public_events:
+        # Count matching tags between the user's tags and the event's tags
+        matching_tags = set(event.tags).intersection(tag_counter.keys())
+        rank_score = sum(tag_counter[tag] for tag in matching_tags)  # Score based on tag frequency
+        event_rankings.append((event, rank_score))
+    
+    # Sort events by rank score in descending order
+    event_rankings.sort(key=lambda x: x[1], reverse=True)
+
+    # Get the top K recommended events
+    top_k_events = [event for event, score in event_rankings[:K]]
+
+    # Create a JSON response with event details
+    response_data = [
+        {
+            "id": event.id,
+            "title": event.title,
+            "description": event.description,
+            "startTime": event.startTime,
+            "location": event.location,
+            "URL": event.URL,
+            "tags": event.tags,
+            "ownerUsername": User.objects.get(id=event.ownerUserID).username
+        } 
+        for event in top_k_events
+    ]
+    
+    return top_k_events    
 
 @login_required
 @user_passes_test(lambda user: user.is_superuser)
 def retag_all_events(request):
-    if request.method == 'POST':
-        knn_strategy = KNNStrategy(n_neighbors=3)
-        tagger = EventTagger(clustering_strategy=knn_strategy)
-        tagger.autotag_public_events()
-    messages.success(request, "All tags have been classified from all events.")
+    # if request.method == 'POST':
+    #     knn_strategy = KNNStrategy(n_neighbors=3)
+    #     tagger = EventTagger(clustering_strategy=knn_strategy)
+    #     tagger.autotag_public_events()
+    # messages.success(request, "All tags have been classified from all events.")
     return redirect('manage')
 
 @login_required
 @user_passes_test(lambda user: user.is_superuser)
 def clear_all_event_tags(request):
     if request.method == 'POST':
-        # Fetch all public events from the database
-        events = Event.objects.filter(isPublic=True)
+        # # Fetch all public events from the database
+        # events = Event.objects.filter(isPublic=True)
 
-        # Check if events are actually being fetched
-        if not events:
-            messages.error(request, "No public events found to clear tags from.")
-            return redirect('manage')
+        # # Check if events are actually being fetched
+        # if not events:
+        #     messages.error(request, "No public events found to clear tags from.")
+        #     return redirect('manage')
         
-        # Clear tags for each event
-        for event in events:
-            event.tags = []  # Clear all tags
-            event.save()  # Ensure the event is saved after clearing
+        # # Clear tags for each event
+        # for event in events:
+        #     event.tags = []  # Clear all tags
+        #     event.save()  # Ensure the event is saved after clearing
 
-        # Add success message after tags are cleared
-        messages.success(request, "All public events tags have been cleared.")
+        # # Add success message after tags are cleared
+        # messages.success(request, "All public events tags have been cleared.")
 
-    return redirect('manage')
+        return redirect('manage')
