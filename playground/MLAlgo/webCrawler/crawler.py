@@ -24,13 +24,12 @@ class Event(Document):
     title = StringField(required=True, max_length=100)
     description = StringField(required=True, max_length=400)  # Updated max_length to 400
     startTime = DateTimeField(required=True, default=datetime.utcnow)
-    location = StringField(default='', blank=True, null=True, max_length=255)
     URL = URLField(blank=True, null=True)  # Allow this field to be empty
     ownerUserID = IntField(required=True)
     isPublic = BooleanField(default=False)
     tags = ListField(StringField(), default=[])
     image = StringField(blank=True, null=True, max_length=200)  # Restrict length to 200 chars
-    venue = StringField(blank=True, null=True, max_length=200)  # Restrict length to 200 chars
+    labels = ListField(StringField(), default=[])  # New field for labels
 
     def __str__(self):
         return self.title
@@ -43,7 +42,8 @@ def crawl_books(num_events=10, api_key="AIzaSyBFAb0wlxYHdYRZfRF9urFww4Cjh5ZWu2o"
     params = {
         "q": "fiction",  # You can change the query as needed
         "maxResults": num_events,
-        "key": api_key
+        "key": api_key,
+        "country": 'US'
     }
 
     response = requests.get(url, params=params)
@@ -63,6 +63,7 @@ def crawl_books(num_events=10, api_key="AIzaSyBFAb0wlxYHdYRZfRF9urFww4Cjh5ZWu2o"
             image_url = item['volumeInfo'].get('imageLinks', {}).get('thumbnail', None)
             image_url = image_url[:200] if image_url else None  # Limit image URL to 200 chars
             event_url = item['volumeInfo'].get('infoLink', 'No URL available')
+            categories = item['volumeInfo'].get('categories', [])  # Fetch categories
 
             # Example start time; you can modify this to extract actual dates if available
             start_time = datetime.now(timezone.utc)
@@ -71,12 +72,11 @@ def crawl_books(num_events=10, api_key="AIzaSyBFAb0wlxYHdYRZfRF9urFww4Cjh5ZWu2o"
                 title=title,
                 description=description,
                 startTime=start_time,
-                location="Unknown",  # Modify as needed
                 URL=event_url,
                 ownerUserID=2,
                 isPublic=True,
                 image=image_url,
-                venue="Google Books"  # Assuming Google Books as the venue
+                labels=categories  # Store categories as labels
             )
             events.append(event)
         except Exception as e:
@@ -104,17 +104,15 @@ def print_events(events):
         print(f"Title: {event.title}")
         print(f"Description: {event.description}")
         print(f"Start Time: {event.startTime}")
-        print(f"Location: {event.location}")
         print(f"URL: {event.URL}")
         print(f"Image: {event.image}")
-        print(f"Venue: {event.venue}")
+        print(f"Labels: {', '.join(event.labels)}")  # Print labels
         print("-" * 40)
 
 # Main function to crawl, print, and conditionally store events
 def crawl_and_store():
     # Fetch random book events
     book_events = crawl_books(10)  # Fetch 10 random books
-    # Fetch random Wikipedia events
 
     # Combine both lists of events
     events = book_events

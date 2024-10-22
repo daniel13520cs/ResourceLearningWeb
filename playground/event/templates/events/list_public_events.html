@@ -18,9 +18,6 @@
                 <strong>Title: {{ event.title }}</strong><br>
                 <p>Description: {{ event.description }}</p>
                 <p>Start Time: {{ event.startTime }}</p>
-                {% if event.location %}
-                    <p>Location: {{ event.location }}</p>
-                {% endif %}
                 {% if event.URL %}
                     URL: <a href="{{ event.URL }}">{{ event.URL }}</a><br>
                 {% endif %}
@@ -43,9 +40,6 @@
                 <strong>Title: {{ event.title }}</strong><br>
                 <p>Description: {{ event.description }}</p>
                 <p>Start Time: {{ event.startTime }}</p>
-                {% if event.location %}
-                    <p>Location: {{ event.location }}</p>
-                {% endif %}
                 {% if event.URL %}
                     URL: <a href="{{ event.URL }}">{{ event.URL }}</a><br>
                 {% endif %}

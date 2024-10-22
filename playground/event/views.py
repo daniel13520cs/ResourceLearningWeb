@@ -19,7 +19,6 @@ def add_event(request):
         title = request.POST.get('title')
         description = request.POST.get('description')
         startTime = request.POST.get('startTime')
-        location = request.POST.get('location')
         URL = request.POST.get('URL')
 
         # Convert the start time string to a datetime object
@@ -34,7 +33,6 @@ def add_event(request):
             title=title,
             description=description,
             startTime=startTime,
-            location=location,
             URL=URL or None,
             ownerUserID = request.user.id
         )
@@ -69,7 +67,6 @@ def list_events(request):
             'title': event.title,
             'description': event.description,
             'startTime': event.startTime,
-            'location': event.location,
             'URL': event.URL,
             'ownerUserID' : event.ownerUserID,
             'ownerUsername': owner_username,  # Add the owner username here
@@ -96,7 +93,6 @@ def list_publicEvents(request):
             'title': event.title,
             'description': event.description,
             'startTime': event.startTime,
-            'location': event.location,
             'URL': event.URL,
             'ownerUserID' : event.ownerUserID,
             'ownerUsername': owner_username,  # Add the owner username here
@@ -175,7 +171,6 @@ def update_event(request, event_id):
         event.title = request.POST.get('title', event.title)  # Update title
         event.description = request.POST.get('description', event.description)  # Update description
         event.startTime = datetime.fromisoformat(request.POST.get('startTime', event.startTime))  # Update start time
-        event.location = request.POST.get('location', event.location)  # Update location
         event.URL = request.POST.get('URL', event.URL)  # Update URL
         event.save()  # Save the updated event
         return redirect('list_events')  # Redirect to the event list
@@ -243,7 +238,6 @@ def GetTopKRecommendationEvents(request, publicEvents, K=5):
             "title": event.title,
             "description": event.description,
             "startTime": event.startTime,
-            "location": event.location,
             "URL": event.URL,
             "tags": event.tags,
             "ownerUsername": User.objects.get(id=event.ownerUserID).username

@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{% static "events/style.css" %}">
 </head>
 <body>
-    <h1>Events</h1>
+    <h1>Opted In Events</h1>
     <button onclick="location.href='{% url 'add_event' %}'">Add New Event</button>
     <ul>
         {% for event in events %}
@@ -19,9 +19,6 @@
                 <strong>Title: {{ event.title }}</strong><br>
                 <p>Description: {{ event.description }}</p>
                 <p>Start Time: {{ event.startTime }}</p>
-                {% if event.location %}
-                    <p>Location: {{ event.location }}</p>
-                {% endif %}
                 <p>Owner: {{ event.ownerUsername }}</p>
                 {% if event.URL %}
                     URL: <a href="{{ event.URL }}">{{ event.URL }}</a><br>
