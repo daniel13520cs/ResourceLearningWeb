@@ -203,8 +203,9 @@ def GetTopKRecommendationEvents(request, publicEvents, K=5):
     # Fetch the events the user has opted into
     user_events = UserEvents.objects.filter(userID=request.user)
 
-    if not user_events:
+    if not user_events.exists():
         messages.warning(request, 'You have not opted into any events.')
+        return []
 
     # Extract the event IDs and fetch the events
     opted_in_event_ids = [ue.eventID for ue in user_events]
@@ -217,7 +218,7 @@ def GetTopKRecommendationEvents(request, publicEvents, K=5):
     
     # Count the frequency of each tag
     tag_counter = Counter(user_tags)
-    
+  
     # Fetch public events that the user has not opted into
     public_events = publicEvents.filter(Q(id__nin=opted_in_event_ids))  # Use `__nin` for "not in"
 
