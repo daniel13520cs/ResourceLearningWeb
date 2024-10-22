@@ -88,7 +88,7 @@ def crawl_books(num_events=10, api_key="AIzaSyBFAb0wlxYHdYRZfRF9urFww4Cjh5ZWu2o"
 def store_events(events):
     for event in events:
         try:
-            existing_event = Event.objects(title=event.title, startTime=event.startTime).first()
+            existing_event = Event.objects(title=event.title).first()
             if not existing_event:
                 event.save()
                 print(f"Saved event: {event.title}")
