@@ -22,7 +22,7 @@ except Exception as e:
 # Event model definition with length restrictions
 class Event(Document):
     title = StringField(required=True, max_length=100)
-    description = StringField(required=True)
+    description = StringField(required=True, max_length=400)  # Updated max_length to 400
     startTime = DateTimeField(required=True, default=datetime.utcnow)
     location = StringField(default='', blank=True, null=True, max_length=255)
     URL = URLField(blank=True, null=True)  # Allow this field to be empty
@@ -35,72 +35,53 @@ class Event(Document):
     def __str__(self):
         return self.title
 
-# Function to fetch events from Wikipedia API
-def crawl_events(topic='2024 in science'):
-    url = "https://en.wikipedia.org/w/api.php"
+# Function to fetch random book events from Google Books API
+def crawl_books(num_events=10, api_key="AIzaSyBFAb0wlxYHdYRZfRF9urFww4Cjh5ZWu2o"):
+    url = f"https://www.googleapis.com/books/v1/volumes"
 
+    # Request random books
     params = {
-        "action": "query",
-        "format": "json",
-        "list": "search",
-        "srsearch": topic,
-        "utf8": 1,
-        "srlimit": 10  # Limit to 10 results
+        "q": "fiction",  # You can change the query as needed
+        "maxResults": num_events,
+        "key": api_key
     }
 
     response = requests.get(url, params=params)
-    
+
     if response.status_code != 200:
-        print(f"Failed to retrieve events: {response.status_code}, Response: {response.text}")
+        print(f"Failed to retrieve books: {response.status_code}, Response: {response.text}")
         return []
 
     data = response.json()
     events = []
 
-    # Extract events from the response
-    if 'query' in data and 'search' in data['query']:
-        for item in data['query']['search']:
-            try:
-                title = item['title'][:200]  # Limit title to 200 chars
-                page_id = item['pageid']
+    # Extract books from the response
+    for item in data.get('items', []):
+        try:
+            title = item['volumeInfo'].get('title', 'No title available')[:100]  # Limit title to 100 chars
+            description = item['volumeInfo'].get('description', 'No description available.')[:400]  # Limit description to 400 chars
+            image_url = item['volumeInfo'].get('imageLinks', {}).get('thumbnail', None)
+            image_url = image_url[:200] if image_url else None  # Limit image URL to 200 chars
+            event_url = item['volumeInfo'].get('infoLink', 'No URL available')
 
-                # Fetch additional details for the event
-                details_params = {
-                    "action": "query",
-                    "format": "json",
-                    "prop": "extracts|pageimages",
-                    "pageids": page_id,
-                    "explaintext": True,
-                    "exlimit": 1
-                }
+            # Example start time; you can modify this to extract actual dates if available
+            start_time = datetime.now(timezone.utc)
 
-                details_response = requests.get(url, params=details_params)
-                details_data = details_response.json()
+            event = Event(
+                title=title,
+                description=description,
+                startTime=start_time,
+                location="Unknown",  # Modify as needed
+                URL=event_url,
+                ownerUserID=2,
+                isPublic=True,
+                image=image_url,
+                venue="Google Books"  # Assuming Google Books as the venue
+            )
+            events.append(event)
+        except Exception as e:
+            print(f"Failed to parse book event: {e}")
 
-                # Truncate strings to their maximum lengths
-                description = details_data['query']['pages'][str(page_id)]['extract'][:200]  # Limit description to 200 chars
-                image_url = details_data['query']['pages'][str(page_id)].get('thumbnail', {}).get('source', None)
-                image_url = image_url[:200] if image_url else None  # Limit image URL to 200 chars
-                event_url = f"https://en.wikipedia.org/?curid={page_id}"
-
-                # Example start time; you can modify this to extract actual dates if available
-                start_time = datetime.now(timezone.utc)
-
-                event = Event(
-                    title=title,
-                    description=description,
-                    startTime=start_time,
-                    location="Unknown",  # Modify as needed
-                    URL=event_url,
-                    ownerUserID=2,
-                    isPublic=True,
-                    image=image_url,
-                    venue="Wikipedia"  # Assuming Wikipedia as the venue
-                )
-                events.append(event)
-            except Exception as e:
-                print(f"Failed to parse event: {e}")
-    
     return events
 
 # Function to store events in MongoDB
@@ -131,16 +112,21 @@ def print_events(events):
 
 # Main function to crawl, print, and conditionally store events
 def crawl_and_store():
-    events = crawl_events()
-    
+    # Fetch random book events
+    book_events = crawl_books(10)  # Fetch 10 random books
+    # Fetch random Wikipedia events
+
+    # Combine both lists of events
+    events = book_events
+
     if not events:
         print("No events found.")
         return
-    
+
     print_events(events)
-    
+
     user_input = input("Do you want to store these events in the database? (Y/N): ").strip().upper()
-    
+
     if user_input == 'Y':
         store_events(events)
     else:
