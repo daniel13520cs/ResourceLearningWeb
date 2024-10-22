@@ -23,9 +23,6 @@ li {
 li img {
     max-width: 100px; /* Limit image width */
     max-height: 100px; /* Limit image height */
-    margin-right: 15px; /* Space between image and text */
+    margin: 20px;
 }
 
-li > div {
-    flex-grow: 1; /* Allow text area to grow and take remaining space */
-}

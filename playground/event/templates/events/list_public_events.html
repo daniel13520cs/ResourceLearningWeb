@@ -14,9 +14,9 @@
     <h1>Public Events Recommendation</h1>
     <ul>
         {% for event in recommendedEvents %}
-            <li style="display: flex; align-items: flex-start; margin-bottom: 15px;">
+            <li>
                 {% if event.image %}
-                    <div style="margin-right: 15px;">
+                    <div>
                         <img src="{{ event.image }}" alt="Event Image" style="max-width: 100px; max-height: 100px;">
                     </div>
                 {% endif %}
@@ -44,9 +44,9 @@
     <h1>Public Events to Participate</h1>
     <ul>
         {% for event in events %}
-            <li style="display: flex; align-items: flex-start; margin-bottom: 15px;">
+            <li >
                 {% if event.image %}
-                    <div style="margin-right: 15px;">
+                    <div>
                         <img src="{{ event.image }}" alt="Event Image" style="max-width: 100px; max-height: 100px;">
                     </div>
                 {% endif %}
