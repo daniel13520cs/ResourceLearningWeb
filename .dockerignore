@@ -1,5 +1,6 @@
 **/__pycache__
 **/.venv
+**/ml_env
 **/.classpath
 **/.dockerignore
 **/.env
