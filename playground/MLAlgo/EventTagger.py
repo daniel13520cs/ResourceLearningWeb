@@ -35,7 +35,7 @@ class EventTagger:
             event.save()
 
             # Print the event's title, assigned tags, and label
-            print(f"Event '{event.title}' has been tagged with: {', '.join(neighbor_labels)} ")
+            print(f"{i} Event '{event.title}' has been tagged with: {', '.join(neighbor_labels)} ")
 
     def autotag_single_event(self, event_id):
         # Fetch the event by ID from MongoDB

@@ -2,6 +2,7 @@ import requests
 from datetime import datetime, timezone
 from mongoengine import connect, Document, StringField, DateTimeField, URLField, IntField, BooleanField, ListField
 import urllib.parse
+import random
 
 # MongoDB Connection
 username = 'daniel13520cs'
@@ -38,9 +39,14 @@ class Event(Document):
 def crawl_books(num_events=10, api_key="AIzaSyBFAb0wlxYHdYRZfRF9urFww4Cjh5ZWu2o"):
     url = f"https://www.googleapis.com/books/v1/volumes"
 
+    general_queries = ["novels", "literature", "bestsellers", "biographies", "science", "history", "mystery", "adventure", "technology", "romance", "programming"]
+    query = random.choice(general_queries)
+    start_index = random.randint(1, 1000)
+    
     # Request random books
     params = {
-        "q": "fiction",  # You can change the query as needed
+        "q": query,  # You can change the query as needed
+        "start_indx": start_index,
         "maxResults": num_events,
         "key": api_key,
         "country": 'US'
@@ -59,6 +65,8 @@ def crawl_books(num_events=10, api_key="AIzaSyBFAb0wlxYHdYRZfRF9urFww4Cjh5ZWu2o"
     for item in data.get('items', []):
         try:
             title = item['volumeInfo'].get('title', 'No title available')[:100]  # Limit title to 100 chars
+            if 'description' not in item['volumeInfo']:
+                continue
             description = item['volumeInfo'].get('description', 'No description available.')[:400]  # Limit description to 400 chars
             image_url = item['volumeInfo'].get('imageLinks', {}).get('thumbnail', None)
             image_url = image_url[:200] if image_url else None  # Limit image URL to 200 chars

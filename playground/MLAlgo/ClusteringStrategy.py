@@ -5,7 +5,7 @@ class ClusteringStrategy:
         raise NotImplementedError
     
 class KNNStrategy(ClusteringStrategy):
-    def __init__(self, n_neighbors=1):
+    def __init__(self, n_neighbors=5):
         self.n_neighbors = n_neighbors
 
     def fit(self, embeddings):
