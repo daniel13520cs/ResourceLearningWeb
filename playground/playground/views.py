@@ -6,6 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView,LogoutView
+from .models import VisitorLog
 
 
 
@@ -30,7 +31,8 @@ def register(request):
     return render(request, 'registration/register.html', {'form': form})
 
 def manage(request):
-    return render(request, 'admin/manage.html')
+    visitor_logs = VisitorLog.objects.all().order_by('-last_visited')
+    return render(request, 'admin/manage.html', {'visitor_logs': visitor_logs})
         
 class LoginView(LoginView):
     # Specify the template for login
