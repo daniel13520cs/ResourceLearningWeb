@@ -20,12 +20,18 @@
                     <div style="margin-right: 15px;">
                         <img src="{{ event.image }}" alt="Event Image" style="max-width: 100px; max-height: 100px;">
                     </div>
-                {% elif event.URL and 'youtube.com' in event.URL %}
-                    {% with event.URL|slice:"-11:" as video_id %}
-                    <div style="margin-right: 15px;">
-                        <img src="https://img.youtube.com/vi/{{ video_id }}/0.jpg" alt="YouTube Thumbnail" style="max-width: 100px; max-height: 100px;">
-                    </div>
-                    {% endwith %}
+                {% elif event.URL %}
+                    {% if 'youtube.com' in event.URL %}
+                        {% with event.URL|slice:"-11:" as video_id %}
+                        <div style="margin-right: 15px;">
+                            <img src="https://img.youtube.com/vi/{{ video_id }}/0.jpg" alt="YouTube Thumbnail" style="max-width: 100px; max-height: 100px;">
+                        </div>
+                        {% endwith %}
+                    {% else %}
+                        <div style="margin-right: 15px;">
+                            <img src="{% static 'events/images/default.jpg' %}" alt="Default Thumbnail" style="max-width: 100px; max-height: 100px;">
+                        </div>
+                    {% endif %}
                 {% endif %}
                 <div style="flex-grow: 1;">
                     <strong>Title: {{ event.title }}</strong><br>
