@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "name": "Docker: Python - Django",
+            "name": "Docker: Python - LearningResourceWeb",
             "type": "docker",
             "request": "launch",
             "preLaunchTask": "docker-run: debug",
