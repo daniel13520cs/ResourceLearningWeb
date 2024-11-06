@@ -8,12 +8,12 @@
             "python": {
                 "pathMappings": [
                     {
-                        "localRoot": "${workspaceFolder}",
-                        "remoteRoot": "/app"
+                        "localRoot": "${workspaceFolder}/playground",  // Adjusted to your project root
+                        "remoteRoot": "/code/playground"               // Adjusted to match your Docker container path
                     }
                 ],
                 "projectType": "django"
-            }
+            },
         }
     ]
 }

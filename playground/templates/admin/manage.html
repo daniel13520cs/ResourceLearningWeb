@@ -11,5 +11,24 @@
     {% csrf_token %}
     <button type="submit">ClearAllEventsTags</button>
 </form>
+<h2>Unique Visitors</h2>
+<table>
+    <thead>
+        <tr>
+            <th>IP Address</th>
+            <th>Last Visited</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for log in visitor_logs %}
+        <tr>
+            <td>{{ log.ip_address }}</td>
+            <td>{{ log.last_visited }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
 {% endblock %}
 

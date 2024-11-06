@@ -1,6 +1,6 @@
 from sentence_transformers import SentenceTransformer
-from .ClusteringStrategy import ClusteringStrategy
-from event.models import Event
+import ClusteringStrategy
+from webCrawler.crawler import Event
 import numpy as np
 
 class EventTagger:
@@ -9,13 +9,13 @@ class EventTagger:
         self.clustering_strategy = clustering_strategy
 
     def autotag_public_events(self):
-        # Fetch all events from the database
+        # Fetch all public events from the database
         events = Event.objects(isPublic=True)
         
-        # Combine title and description into one text for each event
-        event_texts = [f"{event.title}: {event.description}" for event in events]
+        # Combine title, description, and label into one text for each event
+        event_texts = [f"{event.title}: {event.description}. Label: {', '.join(event.labels)}" for event in events]
         
-        # Generate embeddings for each event's combined text
+        # Generate embeddings for each event's combined text (including label)
         embeddings = self.model.encode(event_texts)
         
         # Apply the chosen clustering algorithm
@@ -30,9 +30,12 @@ class EventTagger:
             for label in neighbor_labels:
                 if label not in event.tags:
                     event.tags.append(label)
-                    event.save()
             
-            print(f"Event '{event.title}' assigned to neighbors: {neighbor_labels}")
+            # Save the updated event
+            event.save()
+
+            # Print the event's title, assigned tags, and label
+            print(f"{i} Event '{event.title}' has been tagged with: {', '.join(neighbor_labels)} ")
 
     def autotag_single_event(self, event_id):
         # Fetch the event by ID from MongoDB
@@ -42,10 +45,10 @@ class EventTagger:
             print(f"Event with ID {event_id} not found.")
             return
         
-        # Combine title and description into one text for the event
-        event_text = f"{event.title}: {event.description}"
+        # Combine title, description, and label into one text for the event
+        event_text = f"{event.title}: {event.description}. Label: {', '.join(event.labels)}"
         
-        # Generate the embedding for the single event's combined text
+        # Generate the embedding for the single event's combined text (including label)
         event_embedding = self.model.encode([event_text])
         
         # Fetch all previously tagged events (to cluster this new one with existing ones)
@@ -56,7 +59,7 @@ class EventTagger:
             return
         
         # Combine existing event embeddings with the new event embedding
-        previous_texts = [f"{e.title}: {e.description}" for e in all_events]
+        previous_texts = [f"{e.title}: {e.description}. Label: {', '.join(e.labels)}" for e in all_events]
         previous_embeddings = self.model.encode(previous_texts)
         
         # Stack the new event's embedding with the previous ones
@@ -75,9 +78,12 @@ class EventTagger:
         for label in new_event_labels:
             if label not in event.tags:
                 event.tags.append(label)
-                event.save()
         
-        print(f"Event '{event.title}' assigned to neighbors: {new_event_labels}")
+        # Save the updated event
+        event.save()
+
+        # Print the event's title, assigned tags, and label
+        print(f"Event '{event.title}' has been tagged with: {', '.join(new_event_labels)} ")
 
     def recommend_non_opted_in_public_events(self, user_id):
         # Fetch the user's opted-in events
@@ -101,4 +107,17 @@ class EventTagger:
             if set(event.tags) & opted_in_tags:  # Check for shared tags
                 recommended_events.append(event)
 
+        # Print recommended events' titles, tags, and labels
+        for event in recommended_events:
+            print(f"Recommended Event: '{event.title}' with tags: {', '.join(event.tags)} and label: {', '.join(event.labels)}")
+
         return recommended_events
+
+# Main execution
+if __name__ == "__main__":
+    # Instantiate the EventTagger with your clustering strategy
+    clustering_strategy = ClusteringStrategy.KNNStrategy()  # Replace with actual strategy implementation
+    event_tagger = EventTagger(clustering_strategy)
+
+    # Call the autotag_public_events method to auto-tag the public events
+    event_tagger.autotag_public_events()

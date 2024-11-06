@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'polls.apps.PollsConfig',
     'event.apps.EventConfig',
     'debug_toolbar',
+    'playground',
 ]
 
 
@@ -84,6 +85,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'playground.middleware.LogIPMiddleware',
 ]
 
 DEBUG_TOOLBAR_PANELS = [
