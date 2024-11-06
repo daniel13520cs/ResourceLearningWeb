@@ -4,7 +4,7 @@ Welcome to the Django Learning Resource Management App! This application allows 
 
 ## Features
 
-- **User Authentication**: Sign up, log in, and log out.
+- **User Authentication**: Sign up, log in, and log out .
 - **Learning Resource Management**: Create, update, delete, and view resources.
 - **Image Handling**: Display resource images, including YouTube thumbnails.
 - **Pagination**: Navigate through multiple pages of resources.
