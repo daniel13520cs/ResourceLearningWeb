@@ -1,3 +1,4 @@
 *.pyc
 ml_env
 playground/db.sqlite3
+.venv
