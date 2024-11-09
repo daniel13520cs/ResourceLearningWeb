@@ -45,46 +45,37 @@ Welcome to the Django Learning Resource Management App! This application allows 
 5. **Access the app**:
    Open your web browser and go to `http://127.0.0.1:8000/`.
 
-![Getting Started](path/to/getting-started-image.png)
+![Getting Started](documentation/getting-started-image.png)
 
 ## Usage
 
 ### User Authentication
 
 - **Sign Up**: Create a new account by clicking on the "Sign Up" button on the homepage.
-  ![Sign Up](path/to/signup-image.png)
+  ![Sign Up](documentation/signup-image.png)
 
 - **Log In**: Access your account by entering your credentials.
-  ![Log In](path/to/login-image.png)
+  ![Log In](documentation/login-image.png)
 
 ### Learning Resource Management
 
 - **Create Resource**: Click on "Add New Resource" to create a new learning resource. Fill in the details and submit.
-  ![Create Resource](path/to/create-resource-image.png)
+  ![Create Resource](documentation/create-resource-image.png)
 
 - **View Resources**: Browse through the list of resources. Click on a resource to view more details.
-  ![View Resources](path/to/view-resources-image.png)
+  ![View Resources](documentation/view-resources-image.png)
 
 - **Edit Resource**: If you are the owner, click "Edit" to modify resource details.
-  ![Edit Resource](path/to/edit-resource-image.png)
+  ![Edit Resource](documentation/edit-resource-image.png)
 
 - **Delete Resource**: Remove a resource by clicking "Delete".
-  ![Delete Resource](path/to/delete-resource-image.png)
+  ![Delete Resource](documentation/delete-resource-image.png)
 
-### Opt-In for Public Events
+### Opt-In for Public Learning Resources Events
 
-- **Opt-In to Public Events**: Users can opt-in to public events that other users have published. Look for the public events section and click "Opt In" to participate.
-  ![Opt In Public Events](path/to/opt-in-public-events-image.png)
+- **Opt-In to Public Learning Resources Event**: Users can opt-in to public events that other users have published. Look for the public events section and click "Opt In" to participate.
+  ![Opt In Public Events](documentation/opt-in-public-events-image.png)
 
-### Image Handling
-
-- **Resource Images**: Upload an image for your resource or use a YouTube link to display a thumbnail.
-  ![Resource Images](path/to/resource-images-image.png)
-
-### Pagination
-
-- **Navigate Pages**: Use the pagination controls at the bottom to navigate through resource pages.
-  ![Pagination](path/to/pagination-image.png)
 
 ## Contributing
 
@@ -92,7 +83,7 @@ Contributions are welcome! Please fork the repository and submit a pull request.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the GPL-3.0 License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
