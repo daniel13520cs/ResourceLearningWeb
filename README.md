@@ -75,6 +75,7 @@ Welcome to the Django Learning Resource Management App! This application allows 
 ### Opt-In for Public Learning Resources Events
 
 - **Opt-In to Public Learning Resources Event**: Users can opt-in to public events that other users have published. Look for the public events section and click "Opt In" to participate.
+- **Recommendations for Opt-In Events**: Top recommendation learning resources are shown to users based on their opt-in events.
   ![Opt In Public Events](documentation/opt-in-public-events-image.png)
 
 
