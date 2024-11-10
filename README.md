@@ -9,7 +9,8 @@ Welcome to the Django Learning Resource Management App! This application allows 
 - **Image Handling**: Display resource images, including YouTube thumbnails.
 - **Pagination**: Navigate through multiple pages of resources.
 - **Responsive Design**: Mobile-friendly interface.
-- **Opt-In for Public Events**: Users can opt-in to public events published by other users.
+- **Opt-In for Public Events**: Users can opt-in to public learning resources published by other users.
+- **Recommendations for Opt-In Events**: Top recommendation learning resources are shown to users based on their opt-in events.
 
 ## Getting Started
 
