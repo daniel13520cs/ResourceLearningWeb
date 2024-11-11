@@ -46,7 +46,6 @@ Welcome to the Django Learning Resource Management App! This application allows 
 5. **Access the app**:
    Open your web browser and go to `http://127.0.0.1:8000/`.
 
-![Getting Started](documentation/getting-started-image.png)
 
 ## Usage
 
